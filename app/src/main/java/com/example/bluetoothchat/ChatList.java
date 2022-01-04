@@ -1,13 +1,11 @@
 package com.example.bluetoothchat;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
+
+import com.example.bluetoothchat.message.Message;
+import com.example.bluetoothchat.message.MessageType;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ChatList extends ArrayAdapter<Message> {
         Message msg=getItem(position);
         editText.setText(msg.getMessage());
 
-        if(msg.getMessageType()==MessageType.SENT){
+        if(msg.getMessageType()== MessageType.SENT){
 
             editText.setBackground(ContextCompat.getDrawable(this.getContext(),R.drawable.sent_msg));
             ConstraintLayout constraintLayout=view.findViewById(R.id.chatboxLayout);

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import com.example.bluetoothchat.Config;
+import com.example.bluetoothchat.config.Config;
 
 import java.io.IOException;
 

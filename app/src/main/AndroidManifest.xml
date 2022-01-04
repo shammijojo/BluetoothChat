@@ -34,7 +34,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BluetoothChat">
         <activity
-            android:name=".activity.ChatWindow"
+            android:name=".ChatWindow"
             android:exported="true" />
         <activity
             android:name=".connection.Connect"

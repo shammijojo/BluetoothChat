@@ -9,8 +9,8 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.bluetoothchat.activity.ChatWindow;
-import com.example.bluetoothchat.Config;
+import com.example.bluetoothchat.ChatWindow;
+import com.example.bluetoothchat.config.Config;
 
 import java.io.IOException;
 

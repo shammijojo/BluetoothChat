@@ -15,7 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.bluetoothchat.activity.ChatWindow;
+import com.example.bluetoothchat.ChatWindow;
+import com.example.bluetoothchat.config.Config;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.example.bluetoothchat.activity.ChatWindow;
-import com.example.bluetoothchat.Message;
-import com.example.bluetoothchat.MessageType;
+import com.example.bluetoothchat.ChatWindow;
+import com.example.bluetoothchat.message.Message;
+import com.example.bluetoothchat.message.MessageType;
 
 import java.io.IOException;
 import java.io.InputStream;
