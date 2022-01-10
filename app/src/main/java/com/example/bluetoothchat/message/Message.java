@@ -4,6 +4,7 @@ public class Message {
 
     private String message;
     private MessageType messageType;
+    private String time;
 
     public String getMessage() {
         return message;
@@ -21,8 +22,17 @@ public class Message {
         this.messageType = messageType;
     }
 
-    public Message(String message, MessageType messageType) {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Message(String message, MessageType messageType, String time) {
         this.message = message;
         this.messageType = messageType;
+        this.time = time;
     }
 }

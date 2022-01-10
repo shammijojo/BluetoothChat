@@ -34,9 +34,11 @@ public class ChatList extends ArrayAdapter<Message> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.chatbox_layout, null, true);
         TextView editText = view.findViewById(R.id.chatbox);
+        TextView currentTime=view.findViewById(R.id.time);
 
         Message msg = getItem(position);
         editText.setText(msg.getMessage());
+        currentTime.setText(msg.getTime());
 
         if (msg.getMessageType() == MessageType.SENT) {
 
@@ -46,6 +48,25 @@ public class ChatList extends ArrayAdapter<Message> {
             constraintSet.clone(constraintLayout);
             constraintSet.connect(R.id.chatbox, ConstraintSet.RIGHT, R.id.chatboxLayout, ConstraintSet.RIGHT, 10);
             constraintSet.applyTo(constraintLayout);
+
+            ConstraintLayout constraintLayoutForTime = view.findViewById(R.id.chatboxLayout);
+            ConstraintSet constraintSetForTime = new ConstraintSet();
+            constraintSetForTime.clone(constraintLayoutForTime);
+            constraintSetForTime.connect(R.id.time,ConstraintSet.RIGHT,R.id.chatbox,ConstraintSet.RIGHT,10);
+            constraintSetForTime.applyTo(constraintLayoutForTime);
+        }
+        else{
+            ConstraintLayout constraintLayout = view.findViewById(R.id.chatboxLayout);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.chatbox, ConstraintSet.LEFT, R.id.chatboxLayout, ConstraintSet.LEFT, 10);
+            constraintSet.applyTo(constraintLayout);
+
+            ConstraintLayout constraintLayoutForTime = view.findViewById(R.id.chatboxLayout);
+            ConstraintSet constraintSetForTime = new ConstraintSet();
+            constraintSetForTime.clone(constraintLayoutForTime);
+            constraintSetForTime.connect(R.id.time,ConstraintSet.LEFT,R.id.chatbox,ConstraintSet.LEFT,10);
+            constraintSetForTime.applyTo(constraintLayoutForTime);
         }
 
         return view;

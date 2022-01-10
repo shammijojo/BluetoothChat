@@ -1,11 +1,13 @@
 package com.example.bluetoothchat;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bluetoothchat.config.Config;
@@ -14,6 +16,7 @@ import com.example.bluetoothchat.message.MessageType;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ChatWindow extends AppCompatActivity {
@@ -31,8 +34,8 @@ public class ChatWindow extends AppCompatActivity {
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
 
-        list.add(new Message("Hello!", MessageType.SENT));
-        list.add(new Message("Good Morning", MessageType.RECEIVED));
+        list.add(new Message("Hello!", MessageType.SENT,Calendar.getInstance().getTime().toString()));
+        list.add(new Message("Good Morning", MessageType.RECEIVED,Calendar.getInstance().getTime().toString()));
 
         ChatList adapter = new ChatList(ChatWindow.this, list);
         listView = findViewById(R.id.chatlist);
@@ -48,9 +51,8 @@ public class ChatWindow extends AppCompatActivity {
         });
     }
 
-
     public static void addMsg(Message message) {
-        list.add(new Message(message.getMessage(), message.getMessageType()));
+        list.add(new Message(message.getMessage(), message.getMessageType(), CommonUtil.getCurrentTime()));
         listView.invalidateViews();
     }
 

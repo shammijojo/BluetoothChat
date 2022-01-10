@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ChatWindow">
+    android:background="#F9F6D2"
+    tools:context=".ChatWindow">
 
     <ListView
         android:id="@+id/chatlist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/message"
         tools:ignore="MissingConstraints"
         android:transcriptMode="alwaysScroll"/>
@@ -26,6 +27,7 @@
         app:layout_constraintWidth_percent="0.75"
         android:maxLength="2000"
         android:maxLines="4"
+        android:paddingLeft="2dp"
         android:inputType="textCapSentences|textMultiLine"
         tools:ignore="MissingConstraints">
     </EditText>
@@ -35,9 +37,11 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="2dp"
         android:backgroundTint="@color/teal_700"
         app:layout_constraintWidth_percent="0.2"
-        android:text="send"
+        android:text="SEND"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/message"

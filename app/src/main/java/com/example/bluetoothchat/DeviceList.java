@@ -1,6 +1,7 @@
 package com.example.bluetoothchat;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;

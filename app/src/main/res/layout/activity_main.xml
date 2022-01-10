@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F9F6D2"
     tools:context=".MainActivity">
 
 <!--    <TextView-->
@@ -19,7 +20,7 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="5dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

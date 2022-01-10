@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class ReadWriteThread extends Thread {
     private final BluetoothSocket bluetoothSocket;
@@ -59,7 +60,7 @@ public class ReadWriteThread extends Thread {
                     public void run() {
                         Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                         toast.show();
-                        ChatWindow.addMsg(new Message(str, MessageType.RECEIVED));
+                        ChatWindow.addMsg(new Message(str, MessageType.RECEIVED, Calendar.getInstance().getTime().toString()));
                     }
                 });
 
@@ -91,7 +92,7 @@ public class ReadWriteThread extends Thread {
                 public void run() {
                     Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                     toast.show();
-                    ChatWindow.addMsg(new Message(str, MessageType.SENT));
+                    ChatWindow.addMsg(new Message(str, MessageType.SENT,Calendar.getInstance().getTime().toString()));
                 }
             });
             handler.obtainMessage(2, -1, -1,
