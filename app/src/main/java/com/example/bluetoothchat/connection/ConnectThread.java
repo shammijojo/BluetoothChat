@@ -24,7 +24,7 @@ public class ConnectThread extends Thread {
         socket = tmp;
     }
 
-    public BluetoothSocket getSocket(){
+    public BluetoothSocket getSocket() {
         return socket;
     }
 
@@ -41,8 +41,8 @@ public class ConnectThread extends Thread {
         } catch (IOException e) {
             try {
                 System.out.println(e);
-                if(socket!=null)
-                socket.close();
+                if (socket != null)
+                    socket.close();
             } catch (IOException e2) {
                 System.out.println(e2);
             }
@@ -52,7 +52,7 @@ public class ConnectThread extends Thread {
 
         // Reset the ConnectThread because we're done
         synchronized (this) {
-           // connectThread = null;
+            // connectThread = null;
         }
 
         // Start the connected thread
@@ -64,7 +64,7 @@ public class ConnectThread extends Thread {
     }
 
     private void connected(BluetoothSocket socket, BluetoothDevice device) {
-        Config.socket=socket;
+        Config.socket = socket;
         Config.getReadWriteThread(socket).start();
     }
 

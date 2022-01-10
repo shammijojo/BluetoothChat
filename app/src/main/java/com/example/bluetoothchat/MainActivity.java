@@ -1,7 +1,5 @@
 package com.example.bluetoothchat;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -15,7 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.bluetoothchat.ChatWindow;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.bluetoothchat.config.Config;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<BluetoothDevice> list=new ArrayList<>();
+    List<BluetoothDevice> list = new ArrayList<>();
     ListView listView;
 
     @Override
@@ -34,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         scanDevice();
 
-        DeviceList adapter=new DeviceList(MainActivity.this,list);
-        listView=findViewById(R.id.deviceList);
+        DeviceList adapter = new DeviceList(MainActivity.this, list);
+        listView = findViewById(R.id.deviceList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 BluetoothDevice bluetoothDevice = (BluetoothDevice) listView.getItemAtPosition(i);
                 System.out.println("working");
                 Config.getConnectThread(bluetoothDevice).start();
-                Intent intent=new Intent(getApplicationContext(), ChatWindow.class);
+                Intent intent = new Intent(getApplicationContext(), ChatWindow.class);
                 startActivity(intent);
             }
         });
@@ -54,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
         @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
-            BluetoothAdapter bt=Config.getBluetoothAdapter();
+            BluetoothAdapter bt = Config.getBluetoothAdapter();
             String action = intent.getAction();
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                   // list.add(device.getName() + "\n" + device.getAddress());
+                    // list.add(device.getName() + "\n" + device.getAddress());
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 if (list.size() == 0) {
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
 
 
     @SuppressLint("MissingPermission")

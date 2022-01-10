@@ -25,7 +25,7 @@ public class ReadWriteThread extends Thread {
         this.bluetoothSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
-         handler=new Handler(Looper.getMainLooper());
+        handler = new Handler(Looper.getMainLooper());
 
         try {
             tmpIn = socket.getInputStream();
@@ -40,18 +40,18 @@ public class ReadWriteThread extends Thread {
     public void run() {
         byte[] buffer = new byte[1024];
         int bytes;
-        Arrays.fill(buffer,(byte) 0);
+        Arrays.fill(buffer, (byte) 0);
 
         // Keep listening to the InputStream
         while (true) {
-           // System.out.println("inside");
+            // System.out.println("inside");
             try {
                 // Read from the InputStream
-               // byte[] arr="hello".getBytes(StandardCharsets.UTF_8);
+                // byte[] arr="hello".getBytes(StandardCharsets.UTF_8);
 
                 bytes = inputStream.read(buffer);
-                String str=new String(buffer,StandardCharsets.UTF_8).trim();
-                System.out.println("jojo"+new String(buffer,StandardCharsets.UTF_8).trim());
+                String str = new String(buffer, StandardCharsets.UTF_8).trim();
+                System.out.println("jojo" + new String(buffer, StandardCharsets.UTF_8).trim());
 
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -64,16 +64,15 @@ public class ReadWriteThread extends Thread {
                 });
 
 
-
                 // Send the obtained bytes to the UI Activity
                 handler.obtainMessage(1, bytes, -1,
                         buffer).sendToTarget();
 
-                Arrays.fill(buffer,(byte) 0);
+                Arrays.fill(buffer, (byte) 0);
 
 
             } catch (IOException e) {
-               //connectionLost();
+                //connectionLost();
                 // Start the service over to restart listening mode
                 this.start();
                 break;
@@ -85,14 +84,14 @@ public class ReadWriteThread extends Thread {
     public void write(byte[] buffer) {
         try {
             outputStream.write(buffer);
-            String str=new String(buffer,StandardCharsets.UTF_8).trim();
-            System.out.println(new String(buffer,StandardCharsets.UTF_8).trim());
+            String str = new String(buffer, StandardCharsets.UTF_8).trim();
+            System.out.println(new String(buffer, StandardCharsets.UTF_8).trim());
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
                     Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                     toast.show();
-                    ChatWindow.addMsg(new Message(str,MessageType.SENT));
+                    ChatWindow.addMsg(new Message(str, MessageType.SENT));
                 }
             });
             handler.obtainMessage(2, -1, -1,

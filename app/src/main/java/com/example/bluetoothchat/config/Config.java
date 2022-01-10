@@ -21,41 +21,40 @@ public class Config {
     public static BluetoothSocket socket;
 
 
-    public static BluetoothAdapter getBluetoothAdapter(){
-        try{
-            if(bluetoothAdapter==null){
-                BluetoothAdapter bt=BluetoothAdapter.getDefaultAdapter();
-                bluetoothAdapter=bt;
+    public static BluetoothAdapter getBluetoothAdapter() {
+        try {
+            if (bluetoothAdapter == null) {
+                BluetoothAdapter bt = BluetoothAdapter.getDefaultAdapter();
+                bluetoothAdapter = bt;
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("error");
         }
 
         return bluetoothAdapter;
     }
 
-    public static ConnectThread getConnectThread(BluetoothDevice bluetoothDevice){
-        if(connectThread==null){
-            connectThread=new ConnectThread(bluetoothDevice);
+    public static ConnectThread getConnectThread(BluetoothDevice bluetoothDevice) {
+        if (connectThread == null) {
+            connectThread = new ConnectThread(bluetoothDevice);
         }
         return connectThread;
     }
 
-    public static ConnectThread getConnectThread(){
+    public static ConnectThread getConnectThread() {
         return connectThread;
     }
 
-    public static AcceptThread getAcceptThread(){
-        if(acceptThread==null){
-            acceptThread=new AcceptThread();
+    public static AcceptThread getAcceptThread() {
+        if (acceptThread == null) {
+            acceptThread = new AcceptThread();
         }
         return acceptThread;
     }
 
-    public static ReadWriteThread getReadWriteThread(BluetoothSocket bluetoothSocket){
-        if(readWriteThread==null){
-            readWriteThread=new ReadWriteThread(bluetoothSocket);
+    public static ReadWriteThread getReadWriteThread(BluetoothSocket bluetoothSocket) {
+        if (readWriteThread == null) {
+            readWriteThread = new ReadWriteThread(bluetoothSocket);
         }
         return readWriteThread;
     }
