@@ -31,6 +31,7 @@ public class ChatWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
+        System.out.println("entry");
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
 

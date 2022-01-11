@@ -11,6 +11,7 @@
         android:id="@+id/chatlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@id/message"
         tools:ignore="MissingConstraints"
         android:transcriptMode="alwaysScroll"/>

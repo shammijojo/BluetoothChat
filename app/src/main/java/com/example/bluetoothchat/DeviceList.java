@@ -32,7 +32,8 @@ public class DeviceList extends ArrayAdapter<BluetoothDevice> {
         TextView text = view.findViewById(R.id.deviceName);
 
         BluetoothDevice bluetoothDevice = getItem(position);
-        text.setText(bluetoothDevice.getName());
+        CommonUtil.getDeviceType(view,bluetoothDevice);
+        text.setText(bluetoothDevice.getName().toUpperCase()+" "+bluetoothDevice.getBluetoothClass());
         return view;
     }
 }

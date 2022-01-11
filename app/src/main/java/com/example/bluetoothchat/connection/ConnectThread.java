@@ -11,6 +11,7 @@ import java.io.IOException;
 public class ConnectThread extends Thread {
     private final BluetoothSocket socket;
     private final BluetoothDevice device;
+    private  boolean connected;
 
     @SuppressLint("MissingPermission")
     public ConnectThread(BluetoothDevice device) {
@@ -38,6 +39,7 @@ public class ConnectThread extends Thread {
         // Make a connection to the BluetoothSocket
         try {
             socket.connect();
+            connected=true;
         } catch (IOException e) {
             try {
                 System.out.println(e);
@@ -73,6 +75,10 @@ public class ConnectThread extends Thread {
             socket.close();
         } catch (IOException e) {
         }
+    }
+
+    public  boolean isConnected(){
+        return connected;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.bluetoothchat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -41,8 +42,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 BluetoothDevice bluetoothDevice = (BluetoothDevice) listView.getItemAtPosition(i);
-                System.out.println("working");
                 Config.getConnectThread(bluetoothDevice).start();
+
+                if (android.os.Build.VERSION.SDK_INT > 25)  {
+                    Toast.makeText(view.getContext(),"Connecting...", Toast.LENGTH_SHORT).show();
+                }
+
+
+                int count=0;
+                while(!Config.getConnectThread(bluetoothDevice).isConnected()){
+                    try {
+                        Thread.sleep(3000);
+                        count++;
+                        if(count==3){
+                            Config.getConnectThread().interrupt();
+                            Config.setConnectThreadAsNull();
+                            if (android.os.Build.VERSION.SDK_INT > 25)
+                            Toast.makeText(view.getContext(), "Unable to Connect. Try again later", Toast.LENGTH_SHORT).show();
+                            recreate();
+                            return;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                System.out.println("really");
                 Intent intent = new Intent(getApplicationContext(), ChatWindow.class);
                 startActivity(intent);
             }
@@ -84,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
-        Toast.makeText(this.getApplicationContext(), "start Scanning", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getApplicationContext(), "start Scanning", Toast.LENGTH_SHORT).show();
         bluetoothAdapter.startDiscovery();
 
-        Toast.makeText(this.getApplicationContext(), "Scanning", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this.getApplicationContext(), "Scanning", Toast.LENGTH_SHORT).show();
 
         // Register for broadcasts when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);

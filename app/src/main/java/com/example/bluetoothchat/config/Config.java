@@ -41,6 +41,10 @@ public class Config {
         return connectThread;
     }
 
+    public static void setConnectThreadAsNull(){
+        connectThread=null;
+    }
+
     public static ConnectThread getConnectThread() {
         return connectThread;
     }
