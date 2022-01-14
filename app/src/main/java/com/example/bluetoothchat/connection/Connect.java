@@ -1,10 +1,13 @@
 package com.example.bluetoothchat.connection;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +19,11 @@ import com.example.bluetoothchat.config.Config;
 public class Connect extends AppCompatActivity {
 
     Button accept, request;
+    TextView loadingMessage;
+    private static ProgressBar progressBar;
+    View fullScreen;
     private static Context context;
+    private static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +31,20 @@ public class Connect extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         context = getApplicationContext();
 
-        //handler=new Handler();
-
         initialise();
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                accept.setAlpha(0.5f);
-                Config.getAcceptThread().start();
-                Toast.makeText(view.getContext(), "Waiting for devices...", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setAlpha(1f);
+
+                accept.setClickable(false);
+                request.setClickable(false);
+                accept.setAlpha(.25f);
+
+                Config.setAcceptThread().start();
+                Toast.makeText(view.getContext(), "Waiting for devices...", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -50,15 +61,22 @@ public class Connect extends AppCompatActivity {
     private void initialise() {
         accept = findViewById(R.id.accept);
         request = findViewById(R.id.request);
+        loadingMessage=findViewById(R.id.loadmessage);
+        progressBar=findViewById(R.id.progress);
+        fullScreen=findViewById(R.id.connect);
     }
 
-//    public Handler getHandler(){
-//        //return handler;
-//    }
 
     public static Context getContext() {
         return context;
     }
 
+    public static ProgressBar getProgressBar(){
+        return progressBar;
+    }
+
+    public static Activity getActivity() {
+        return activity;
+    }
 
 }

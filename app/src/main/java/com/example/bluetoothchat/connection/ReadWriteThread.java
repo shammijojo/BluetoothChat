@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.bluetoothchat.ChatWindow;
+import com.example.bluetoothchat.CommonUtil;
 import com.example.bluetoothchat.message.Message;
 import com.example.bluetoothchat.message.MessageType;
 
@@ -54,6 +55,10 @@ public class ReadWriteThread extends Thread {
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
                 System.out.println("jojo" + new String(buffer, StandardCharsets.UTF_8).trim());
 
+                if(str.equals("<--DISCONNECTING-->")){
+                    CommonUtil.disconnect();
+                    break;
+                }
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
@@ -75,7 +80,7 @@ public class ReadWriteThread extends Thread {
             } catch (IOException e) {
                 //connectionLost();
                 // Start the service over to restart listening mode
-                this.start();
+               // this.start();
                 break;
             }
         }
@@ -87,6 +92,11 @@ public class ReadWriteThread extends Thread {
             outputStream.write(buffer);
             String str = new String(buffer, StandardCharsets.UTF_8).trim();
             System.out.println(new String(buffer, StandardCharsets.UTF_8).trim());
+            if(str.equals("<--DISCONNECTING-->")){
+                CommonUtil.disconnect();
+                return;
+            }
+
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {

@@ -33,20 +33,20 @@
         tools:ignore="MissingConstraints">
     </EditText>
 
-    <Button
+    <ImageButton
         android:id="@+id/send"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="2dp"
-        android:backgroundTint="@color/teal_700"
         app:layout_constraintWidth_percent="0.2"
-        android:text="SEND"
-        android:textSize="10dp"
+        android:src="@drawable/sendmail"
+        android:scaleType="fitXY"
+        android:backgroundTint="#F9F6D2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/message"
         >
-    </Button>
+    </ImageButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

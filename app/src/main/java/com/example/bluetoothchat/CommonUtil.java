@@ -1,23 +1,19 @@
 package com.example.bluetoothchat;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothClass;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-
+import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.connection.Connect;
-import com.example.bluetoothchat.message.Message;
-import com.example.bluetoothchat.message.MessageType;
 
-import java.time.OffsetTime;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 public class CommonUtil {
@@ -71,6 +67,56 @@ public class CommonUtil {
                 ((ImageView)view.findViewById(R.id.deviceIcon)).setImageResource(R.drawable.others);
         }
 
+    }
+
+    public static boolean selectMenuItemOption(MenuItem item,Activity activity){
+        if(item.getTitle().toString().equals("Disconnect")){
+            disconnectConfirm();
+        }
+        else if(item.getTitle().toString().equals("Exit")){
+            activity.moveTaskToBack(true);
+            System.exit(0);
+        }
+        return true;
+    }
+
+    public static void disconnect(){
+        Config.getReadWriteThread().interrupt();
+        Config.setReadWriteThreadAsNull();
+        Config.setAcceptThreadAsNull();
+        Config.setConnectThreadAsNull();
+        ChatWindow.getActivity().finish();
+        Intent intent=new Intent(ChatWindow.getActivity(),Connect.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ChatWindow.getActivity().startActivity(intent);
+    }
+
+
+    private static void disconnectConfirm(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
+        alertDialogBuilder.setMessage("Are you sure to exit?");
+        alertDialogBuilder.setCancelable(true);
+
+        alertDialogBuilder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String disconnectMessage="<--DISCONNECTING-->";
+                        Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }

@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+import androidx.annotation.RequiresPermission;
+
 import com.example.bluetoothchat.connection.AcceptThread;
 import com.example.bluetoothchat.connection.ConnectThread;
 import com.example.bluetoothchat.connection.ReadWriteThread;
@@ -41,26 +43,54 @@ public class Config {
         return connectThread;
     }
 
-    public static void setConnectThreadAsNull(){
-        connectThread=null;
-    }
-
     public static ConnectThread getConnectThread() {
         return connectThread;
     }
 
-    public static AcceptThread getAcceptThread() {
+    public static void setConnectThreadAsNull(){
+        if(connectThread!=null && connectThread.isAlive()){
+            connectThread.interrupt();
+        }
+        connectThread=null;
+    }
+
+
+    public static AcceptThread setAcceptThread() {
         if (acceptThread == null) {
             acceptThread = new AcceptThread();
         }
         return acceptThread;
     }
 
-    public static ReadWriteThread getReadWriteThread(BluetoothSocket bluetoothSocket) {
-        if (readWriteThread == null) {
+    public static void setAcceptThreadAsNull() {
+        if (acceptThread != null && acceptThread.isAlive()) {
+            acceptThread.interrupt();
+        }
+        acceptThread = null;
+    }
+
+    public static AcceptThread getAcceptThread() {
+        return acceptThread;
+    }
+
+
+    public static ReadWriteThread setReadWriteThread(BluetoothSocket bluetoothSocket) {
+        if (readWriteThread==null) {
             readWriteThread = new ReadWriteThread(bluetoothSocket);
         }
         return readWriteThread;
     }
+
+    public static ReadWriteThread getReadWriteThread(){
+        return readWriteThread;
+    }
+
+    public static void setReadWriteThreadAsNull() {
+        if (readWriteThread!=null && readWriteThread.isAlive()) {
+            readWriteThread.interrupt();
+        }
+        readWriteThread=null;
+    }
+
 
 }

@@ -53,7 +53,7 @@ public class AcceptThread extends Thread {
     private void connected(BluetoothSocket socket, BluetoothDevice remoteDevice) {
         Config.socket = socket;
         System.out.println(socket + " connecting " + remoteDevice);
-        Config.getReadWriteThread(socket).start();
+        Config.setReadWriteThread(socket).start();
         Intent i = new Intent(Connect.getContext(), ChatWindow.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Connect.getContext().startActivity(i);

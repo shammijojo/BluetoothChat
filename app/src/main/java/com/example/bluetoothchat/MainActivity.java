@@ -9,9 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,11 +25,19 @@ public class MainActivity extends AppCompatActivity {
 
     List<BluetoothDevice> list = new ArrayList<>();
     ListView listView;
+    ProgressBar progressBar;
+    static Context context;
+    static Activity activity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar=findViewById(R.id.progressInDevice);
+        context =getApplicationContext();
+        activity=MainActivity.this;
+        context=getApplicationContext();
 
         scanDevice();
 
@@ -38,40 +45,78 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.deviceList);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                BluetoothDevice bluetoothDevice = (BluetoothDevice) listView.getItemAtPosition(i);
-                Config.getConnectThread(bluetoothDevice).start();
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                BluetoothDevice bluetoothDevice = (BluetoothDevice) listView.getItemAtPosition(i);
+//                Config.getConnectThread(bluetoothDevice).start();
+//
+//                if (android.os.Build.VERSION.SDK_INT > 25) {
+//                    Toast.makeText(view.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+//                }
+//                    progressBar.setVisibility(View.VISIBLE);
+//
+//
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        int count=0;
+//                        while(!Config.getConnectThread(bluetoothDevice).isConnected()){
+//                            try {
+//                                Thread.sleep(3000);
+//                                count++;
+//                                if(count==3){
+//                                    Config.getConnectThread().interrupt();
+//                                    Config.setConnectThreadAsNull();
+//
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            if (android.os.Build.VERSION.SDK_INT > 25)
+//                                            Toast.makeText(view.getContext(), "Unable to Connect. Try again later", Toast.LENGTH_SHORT).show();
+//                                          //  progressBar.setVisibility(View.INVISIBLE);
+//
+//                                            Intent i = new Intent(MainActivity.this, MainActivity.class);
+//                                            finish();
+//                                            overridePendingTransition(0, 0);
+//                                            startActivity(i);
+//                                            overridePendingTransition(0, 0);
+//
+//                                        }
+//                                    });
+//
+//                                    return;
+//                                }
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//
+//                        Toast.makeText(view.getContext(), "Connected Successfully", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplicationContext(), ChatWindow.class);
+//                        startActivity(intent);
+//
+//
+//                        runOnUiThread(new Runnable() {
+//                            public void run() {
+//                                if (android.os.Build.VERSION.SDK_INT > 25)
+//                                progressBar.setVisibility(View.VISIBLE);
+//
+//                                view.setAlpha(.1f);
+//                            }
+//                        });
+//                    }
+//                }).start();
+//
+//            }
+//
+//        });
 
-                if (android.os.Build.VERSION.SDK_INT > 25)  {
-                    Toast.makeText(view.getContext(),"Connecting...", Toast.LENGTH_SHORT).show();
-                }
 
 
-                int count=0;
-                while(!Config.getConnectThread(bluetoothDevice).isConnected()){
-                    try {
-                        Thread.sleep(3000);
-                        count++;
-                        if(count==3){
-                            Config.getConnectThread().interrupt();
-                            Config.setConnectThreadAsNull();
-                            if (android.os.Build.VERSION.SDK_INT > 25)
-                            Toast.makeText(view.getContext(), "Unable to Connect. Try again later", Toast.LENGTH_SHORT).show();
-                            recreate();
-                            return;
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                System.out.println("really");
-                Intent intent = new Intent(getApplicationContext(), ChatWindow.class);
-                startActivity(intent);
-            }
-        });
     }
 
     final BroadcastReceiver discoveryFinishReceiver = new BroadcastReceiver() {
@@ -135,4 +180,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    public static Context getContext(){
+        return context;
+    }
+
+    public static Activity getActivity(){
+        return activity;
+    }
+
+
+
 }

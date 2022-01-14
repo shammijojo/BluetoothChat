@@ -67,7 +67,7 @@ public class ConnectThread extends Thread {
 
     private void connected(BluetoothSocket socket, BluetoothDevice device) {
         Config.socket = socket;
-        Config.getReadWriteThread(socket).start();
+        Config.setReadWriteThread(socket).start();
     }
 
     public void cancel() {
