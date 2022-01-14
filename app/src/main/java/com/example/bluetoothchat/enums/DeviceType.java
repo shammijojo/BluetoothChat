@@ -1,14 +1,13 @@
-package com.example.bluetoothchat;
+package com.example.bluetoothchat.enums;
 
 public enum DeviceType {
 
     SMARTPHONE,
     LAPTOP,
     SPEAKER,
-    HEADPHONE,
     OTHERS;
 
-    DeviceType(){
+    DeviceType() {
     }
 
 }

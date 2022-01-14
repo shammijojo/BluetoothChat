@@ -1,4 +1,4 @@
-package com.example.bluetoothchat;
+package com.example.bluetoothchat.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,17 +18,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.example.bluetoothchat.R;
+import com.example.bluetoothchat.btactivity.ChatWindow;
+import com.example.bluetoothchat.btactivity.MainActivity;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 import java.util.List;
 
-public class DeviceList extends ArrayAdapter<BluetoothDevice> {
+public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
 
     LayoutInflater inflater;
 
-    public DeviceList(@NonNull Context context, @NonNull List<BluetoothDevice> list) {
+    public DeviceListAdapter(@NonNull Context context, @NonNull List<BluetoothDevice> list) {
         super(context, R.layout.device_list_layout, list);
-        context=getContext();
+        context = getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -39,20 +43,20 @@ public class DeviceList extends ArrayAdapter<BluetoothDevice> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.device_list_layout, null, true);
         TextView text = view.findViewById(R.id.deviceName);
-        Context context=MainActivity.getContext();
-        Activity activity=MainActivity.getActivity();
-        ListView listView=activity.findViewById(R.id.deviceList);
-        ProgressBar progressBar=activity.findViewById(R.id.progressInDevice);
+        Context context = MainActivity.getContext();
+        Activity activity = MainActivity.getActivity();
+        ListView listView = activity.findViewById(R.id.deviceList);
+        ProgressBar progressBar = activity.findViewById(R.id.progressInDevice);
 
         BluetoothDevice bluetoothDevice = getItem(position);
-        CommonUtil.getDeviceType(view,bluetoothDevice);
-        text.setText(bluetoothDevice.getName().toUpperCase()+" "+bluetoothDevice.getBluetoothClass());
+        CommonUtil.getDeviceType(view, bluetoothDevice);
+        text.setText(bluetoothDevice.getName().toUpperCase() + " " + bluetoothDevice.getBluetoothClass());
 
-        View textView=view.findViewById(R.id.layout);
+        View textView = view.findViewById(R.id.layout);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.received_msg));
+                textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.received_msg));
 
 
                 Config.getConnectThread(bluetoothDevice).start();
@@ -70,12 +74,12 @@ public class DeviceList extends ArrayAdapter<BluetoothDevice> {
                             }
                         });
 
-                        int count=0;
-                        while(!Config.getConnectThread(bluetoothDevice).isConnected()){
+                        int count = 0;
+                        while (!Config.getConnectThread(bluetoothDevice).isConnected()) {
                             try {
                                 Thread.sleep(3000);
                                 count++;
-                                if(count==3){
+                                if (count == 3) {
                                     Config.getConnectThread().interrupt();
                                     Config.setConnectThreadAsNull();
 
@@ -104,7 +108,7 @@ public class DeviceList extends ArrayAdapter<BluetoothDevice> {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (android.os.Build.VERSION.SDK_INT > 25)
-                                Toast.makeText(view.getContext(), "Connected Successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), "Connected Successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(context, ChatWindow.class);
                                 activity.startActivity(intent);
                             }
@@ -112,7 +116,6 @@ public class DeviceList extends ArrayAdapter<BluetoothDevice> {
 
                     }
                 }).start();
-
 
 
             }

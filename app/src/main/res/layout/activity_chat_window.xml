@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9F6D2"
-    tools:context=".ChatWindow">
+    tools:context=".btactivity.ChatWindow">
 
     <ListView
         android:id="@+id/chatlist"
@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="2dp"
         app:layout_constraintWidth_percent="0.2"
-        android:src="@drawable/sendmail"
+        android:src="@drawable/send"
         android:scaleType="fitXY"
         android:backgroundTint="#F9F6D2"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,6 @@
-package com.example.bluetoothchat.message;
+package com.example.bluetoothchat.model;
+
+import com.example.bluetoothchat.enums.MessageType;
 
 public class Message {
 

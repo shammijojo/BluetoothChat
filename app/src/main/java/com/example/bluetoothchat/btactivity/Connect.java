@@ -1,4 +1,4 @@
-package com.example.bluetoothchat.connection;
+package com.example.bluetoothchat.btactivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bluetoothchat.MainActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
 
@@ -61,9 +60,9 @@ public class Connect extends AppCompatActivity {
     private void initialise() {
         accept = findViewById(R.id.accept);
         request = findViewById(R.id.request);
-        loadingMessage=findViewById(R.id.loadmessage);
-        progressBar=findViewById(R.id.progress);
-        fullScreen=findViewById(R.id.connect);
+        loadingMessage = findViewById(R.id.loadmessage);
+        progressBar = findViewById(R.id.progress);
+        fullScreen = findViewById(R.id.connect);
     }
 
 
@@ -71,7 +70,7 @@ public class Connect extends AppCompatActivity {
         return context;
     }
 
-    public static ProgressBar getProgressBar(){
+    public static ProgressBar getProgressBar() {
         return progressBar;
     }
 

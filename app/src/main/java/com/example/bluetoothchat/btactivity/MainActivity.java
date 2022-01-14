@@ -1,4 +1,4 @@
-package com.example.bluetoothchat;
+package com.example.bluetoothchat.btactivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bluetoothchat.R;
+import com.example.bluetoothchat.adapter.DeviceListAdapter;
 import com.example.bluetoothchat.config.Config;
 
 import java.util.ArrayList;
@@ -34,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar=findViewById(R.id.progressInDevice);
-        context =getApplicationContext();
-        activity=MainActivity.this;
-        context=getApplicationContext();
+        progressBar = findViewById(R.id.progressInDevice);
+        context = getApplicationContext();
+        activity = MainActivity.this;
+        context = getApplicationContext();
 
         scanDevice();
 
-        DeviceList adapter = new DeviceList(MainActivity.this, list);
+        DeviceListAdapter adapter = new DeviceListAdapter(MainActivity.this, list);
         listView = findViewById(R.id.deviceList);
         listView.setAdapter(adapter);
 
@@ -115,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-
-
     }
 
     final BroadcastReceiver discoveryFinishReceiver = new BroadcastReceiver() {
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this.getApplicationContext(), "start Scanning", Toast.LENGTH_SHORT).show();
         bluetoothAdapter.startDiscovery();
 
-      //  Toast.makeText(this.getApplicationContext(), "Scanning", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this.getApplicationContext(), "Scanning", Toast.LENGTH_SHORT).show();
 
         // Register for broadcasts when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -181,14 +181,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 
-    public static Activity getActivity(){
+    public static Activity getActivity() {
         return activity;
     }
-
 
 
 }

@@ -4,8 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import androidx.annotation.RequiresPermission;
-
 import com.example.bluetoothchat.connection.AcceptThread;
 import com.example.bluetoothchat.connection.ConnectThread;
 import com.example.bluetoothchat.connection.ReadWriteThread;
@@ -47,11 +45,11 @@ public class Config {
         return connectThread;
     }
 
-    public static void setConnectThreadAsNull(){
-        if(connectThread!=null && connectThread.isAlive()){
+    public static void setConnectThreadAsNull() {
+        if (connectThread != null && connectThread.isAlive()) {
             connectThread.interrupt();
         }
-        connectThread=null;
+        connectThread = null;
     }
 
 
@@ -75,21 +73,21 @@ public class Config {
 
 
     public static ReadWriteThread setReadWriteThread(BluetoothSocket bluetoothSocket) {
-        if (readWriteThread==null) {
+        if (readWriteThread == null) {
             readWriteThread = new ReadWriteThread(bluetoothSocket);
         }
         return readWriteThread;
     }
 
-    public static ReadWriteThread getReadWriteThread(){
+    public static ReadWriteThread getReadWriteThread() {
         return readWriteThread;
     }
 
     public static void setReadWriteThreadAsNull() {
-        if (readWriteThread!=null && readWriteThread.isAlive()) {
+        if (readWriteThread != null && readWriteThread.isAlive()) {
             readWriteThread.interrupt();
         }
-        readWriteThread=null;
+        readWriteThread = null;
     }
 
 

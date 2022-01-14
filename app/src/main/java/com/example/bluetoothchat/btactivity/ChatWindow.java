@@ -1,4 +1,4 @@
-package com.example.bluetoothchat;
+package com.example.bluetoothchat.btactivity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,18 +13,19 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bluetoothchat.R;
+import com.example.bluetoothchat.adapter.ChatListAdapter;
 import com.example.bluetoothchat.config.Config;
-import com.example.bluetoothchat.message.Message;
-import com.example.bluetoothchat.message.MessageType;
+import com.example.bluetoothchat.model.Message;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ChatWindow extends AppCompatActivity {
 
-    private  static List<Message> list = new ArrayList<>();
+    private static List<Message> list = new ArrayList<>();
     private static ListView listView;
     ImageButton send;
     EditText editText;
@@ -33,27 +34,27 @@ public class ChatWindow extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu m) {
         super.onCreateOptionsMenu(m);
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu,m);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, m);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return CommonUtil.selectMenuItemOption(item,ChatWindow.this);
+        return CommonUtil.selectMenuItemOption(item, ChatWindow.this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
-        activity=ChatWindow.this;
+        activity = ChatWindow.this;
 
         System.out.println("entry");
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
 
-        ChatList adapter = new ChatList(ChatWindow.this, list);
+        ChatListAdapter adapter = new ChatListAdapter(ChatWindow.this, list);
         listView = findViewById(R.id.chatlist);
         listView.setAdapter(adapter);
 
@@ -74,7 +75,7 @@ public class ChatWindow extends AppCompatActivity {
         listView.invalidateViews();
     }
 
-    public static Activity getActivity(){
+    public static Activity getActivity() {
         return activity;
     }
 

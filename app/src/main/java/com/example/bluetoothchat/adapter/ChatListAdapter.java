@@ -1,4 +1,4 @@
-package com.example.bluetoothchat;
+package com.example.bluetoothchat.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,16 +14,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 
-import com.example.bluetoothchat.message.Message;
-import com.example.bluetoothchat.message.MessageType;
+import com.example.bluetoothchat.R;
+import com.example.bluetoothchat.enums.MessageType;
+import com.example.bluetoothchat.model.Message;
 
 import java.util.List;
 
-public class ChatList extends ArrayAdapter<Message> {
+public class ChatListAdapter extends ArrayAdapter<Message> {
 
     LayoutInflater inflater;
 
-    public ChatList(@NonNull Context context, @NonNull List<Message> list) {
+    public ChatListAdapter(@NonNull Context context, @NonNull List<Message> list) {
         super(context, R.layout.chatbox_layout, list);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -34,7 +35,7 @@ public class ChatList extends ArrayAdapter<Message> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.chatbox_layout, null, true);
         TextView editText = view.findViewById(R.id.chatbox);
-        TextView currentTime=view.findViewById(R.id.time);
+        TextView currentTime = view.findViewById(R.id.time);
 
         Message msg = getItem(position);
         editText.setText(msg.getMessage());
@@ -52,10 +53,9 @@ public class ChatList extends ArrayAdapter<Message> {
             ConstraintLayout constraintLayoutForTime = view.findViewById(R.id.chatboxLayout);
             ConstraintSet constraintSetForTime = new ConstraintSet();
             constraintSetForTime.clone(constraintLayoutForTime);
-            constraintSetForTime.connect(R.id.time,ConstraintSet.RIGHT,R.id.chatbox,ConstraintSet.RIGHT,10);
+            constraintSetForTime.connect(R.id.time, ConstraintSet.RIGHT, R.id.chatbox, ConstraintSet.RIGHT, 10);
             constraintSetForTime.applyTo(constraintLayoutForTime);
-        }
-        else{
+        } else {
             ConstraintLayout constraintLayout = view.findViewById(R.id.chatboxLayout);
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(constraintLayout);
@@ -65,7 +65,7 @@ public class ChatList extends ArrayAdapter<Message> {
             ConstraintLayout constraintLayoutForTime = view.findViewById(R.id.chatboxLayout);
             ConstraintSet constraintSetForTime = new ConstraintSet();
             constraintSetForTime.clone(constraintLayoutForTime);
-            constraintSetForTime.connect(R.id.time,ConstraintSet.LEFT,R.id.chatbox,ConstraintSet.LEFT,10);
+            constraintSetForTime.connect(R.id.time, ConstraintSet.LEFT, R.id.chatbox, ConstraintSet.LEFT, 10);
             constraintSetForTime.applyTo(constraintLayoutForTime);
         }
 

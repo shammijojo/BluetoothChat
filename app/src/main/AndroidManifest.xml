@@ -34,10 +34,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BluetoothChat">
         <activity
-            android:name=".ChatWindow"
+            android:name=".btactivity.ChatWindow"
             android:exported="true" />
         <activity
-            android:name=".connection.Connect"
+            android:name=".btactivity.Connect"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".btactivity.MainActivity"
             android:exported="true"></activity>
     </application>
 

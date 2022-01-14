@@ -5,10 +5,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.example.bluetoothchat.ChatWindow;
-import com.example.bluetoothchat.CommonUtil;
-import com.example.bluetoothchat.message.Message;
-import com.example.bluetoothchat.message.MessageType;
+import com.example.bluetoothchat.btactivity.ChatWindow;
+import com.example.bluetoothchat.btactivity.Connect;
+import com.example.bluetoothchat.enums.MessageType;
+import com.example.bluetoothchat.model.Message;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +56,7 @@ public class ReadWriteThread extends Thread {
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
                 System.out.println("jojo" + new String(buffer, StandardCharsets.UTF_8).trim());
 
-                if(str.equals("<--DISCONNECTING-->")){
+                if (str.equals("<--DISCONNECTING-->")) {
                     CommonUtil.disconnect();
                     break;
                 }
@@ -80,7 +81,7 @@ public class ReadWriteThread extends Thread {
             } catch (IOException e) {
                 //connectionLost();
                 // Start the service over to restart listening mode
-               // this.start();
+                // this.start();
                 break;
             }
         }
@@ -92,7 +93,7 @@ public class ReadWriteThread extends Thread {
             outputStream.write(buffer);
             String str = new String(buffer, StandardCharsets.UTF_8).trim();
             System.out.println(new String(buffer, StandardCharsets.UTF_8).trim());
-            if(str.equals("<--DISCONNECTING-->")){
+            if (str.equals("<--DISCONNECTING-->")) {
                 CommonUtil.disconnect();
                 return;
             }
@@ -102,7 +103,7 @@ public class ReadWriteThread extends Thread {
                 public void run() {
                     Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                     toast.show();
-                    ChatWindow.addMsg(new Message(str, MessageType.SENT,Calendar.getInstance().getTime().toString()));
+                    ChatWindow.addMsg(new Message(str, MessageType.SENT, Calendar.getInstance().getTime().toString()));
                 }
             });
             handler.obtainMessage(2, -1, -1,
