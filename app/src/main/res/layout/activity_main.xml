@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F9F6D2"
     android:id="@+id/Main"
-    tools:context=".btactivity.MainActivity">
+    tools:context=".btactivity.DeviceList">
 
     <ListView
         android:id="@+id/deviceList"

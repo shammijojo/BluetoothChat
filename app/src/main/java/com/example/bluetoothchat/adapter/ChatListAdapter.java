@@ -42,7 +42,6 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
         currentTime.setText(msg.getTime());
 
         if (msg.getMessageType() == MessageType.SENT) {
-
             editText.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.sent_msg));
             ConstraintLayout constraintLayout = view.findViewById(R.id.chatboxLayout);
             ConstraintSet constraintSet = new ConstraintSet();

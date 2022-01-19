@@ -1,7 +1,7 @@
 package com.example.bluetoothchat.btactivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,34 +14,43 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 public class Connect extends AppCompatActivity {
 
-    Button accept, request;
-    TextView loadingMessage;
+    private Button accept, request;
+    private TextView loadingMessage;
     private static ProgressBar progressBar;
-    View fullScreen;
-    private static Context context;
-    private static Activity activity;
+    private View fullScreen;
+    private static Activity context;
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        context = getApplicationContext();
-
         initialise();
+
+        try{
+            if(!CommonUtil.isBluetoothEnabled()){
+                Toast.makeText(getApplicationContext(),"Switching on bluetooth...",Toast.LENGTH_SHORT).show();
+                Config.getBluetoothAdapter().enable();
+                Toast.makeText(getApplicationContext(),"Bluetooth switched on successfully",Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception ex){
+            CommonUtil.errorDialogBox();
+        }
+
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.setAlpha(1f);
-
                 accept.setClickable(false);
                 request.setClickable(false);
                 accept.setAlpha(.25f);
-
                 Config.setAcceptThread().start();
                 Toast.makeText(view.getContext(), "Waiting for devices...", Toast.LENGTH_LONG).show();
             }
@@ -50,14 +59,15 @@ public class Connect extends AppCompatActivity {
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                finish();
+                Intent i = new Intent(getApplicationContext(), DeviceList.class);
                 startActivity(i);
             }
         });
-
     }
 
     private void initialise() {
+        context = this;
         accept = findViewById(R.id.accept);
         request = findViewById(R.id.request);
         loadingMessage = findViewById(R.id.loadmessage);
@@ -65,17 +75,8 @@ public class Connect extends AppCompatActivity {
         fullScreen = findViewById(R.id.connect);
     }
 
-
-    public static Context getContext() {
+    public static Activity getContext() {
         return context;
-    }
-
-    public static ProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    public static Activity getActivity() {
-        return activity;
     }
 
 }

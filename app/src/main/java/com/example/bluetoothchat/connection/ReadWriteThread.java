@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
+import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.enums.MessageType;
 import com.example.bluetoothchat.model.Message;
 import com.example.bluetoothchat.utils.CommonUtil;
@@ -79,9 +80,7 @@ public class ReadWriteThread extends Thread {
 
 
             } catch (IOException e) {
-                //connectionLost();
-                // Start the service over to restart listening mode
-                // this.start();
+                CommonUtil.errorDialogBox();
                 break;
             }
         }
@@ -109,6 +108,7 @@ public class ReadWriteThread extends Thread {
             handler.obtainMessage(2, -1, -1,
                     buffer).sendToTarget();
         } catch (IOException e) {
+            CommonUtil.errorDialogBox();
         }
     }
 

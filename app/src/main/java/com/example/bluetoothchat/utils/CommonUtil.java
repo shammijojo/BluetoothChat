@@ -3,6 +3,7 @@ package com.example.bluetoothchat.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -119,6 +120,50 @@ public class CommonUtil {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    public static void errorDialogBox(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
+        alertDialogBuilder.setMessage("Some error occurred!!Try again later");
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setTitle("ERROR");
+        alertDialogBuilder.setIcon(R.drawable.warning);
+
+        alertDialogBuilder.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String disconnectMessage = "<--DISCONNECTING-->";
+                        Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
+                        Config.setConnectThreadAsNull();
+                        Config.setAcceptThreadAsNull();
+                        Config.setReadWriteThreadAsNull();
+                        dialog.cancel();
+                        ChatWindow.getActivity().finish();
+                        Intent i = new Intent(ChatWindow.getActivity(), Connect.class);
+                        ChatWindow.getActivity().startActivity(i);
+                    }
+                });
+
+
+        ChatWindow.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
+
+    }
+
+
+    public static boolean isBluetoothEnabled(){
+        BluetoothAdapter bluetoothAdapter=Config.getBluetoothAdapter();
+        if(bluetoothAdapter==null || !bluetoothAdapter.isEnabled()){
+            return false;
+        }
+        return true;
     }
 
 }

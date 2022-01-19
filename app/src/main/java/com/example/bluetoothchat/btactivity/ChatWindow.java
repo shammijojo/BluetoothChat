@@ -27,8 +27,8 @@ public class ChatWindow extends AppCompatActivity {
 
     private static List<Message> list = new ArrayList<>();
     private static ListView listView;
-    ImageButton send;
-    EditText editText;
+    private ImageButton send;
+    private EditText editText;
     static Activity activity;
 
     @Override
@@ -48,15 +48,7 @@ public class ChatWindow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
-        activity = ChatWindow.this;
-
-        System.out.println("entry");
-        send = findViewById(R.id.send);
-        editText = findViewById(R.id.message);
-
-        ChatListAdapter adapter = new ChatListAdapter(ChatWindow.this, list);
-        listView = findViewById(R.id.chatlist);
-        listView.setAdapter(adapter);
+        initialise();
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +58,21 @@ public class ChatWindow extends AppCompatActivity {
                 editText.setText("");
             }
         });
-
-
     }
 
     public static void addMsg(Message message) {
         list.add(new Message(message.getMessage(), message.getMessageType(), CommonUtil.getCurrentTime()));
         listView.invalidateViews();
+    }
+
+    private void initialise(){
+        activity = ChatWindow.this;
+        send = findViewById(R.id.send);
+        editText = findViewById(R.id.message);
+
+        ChatListAdapter adapter = new ChatListAdapter(ChatWindow.this, list);
+        listView = findViewById(R.id.chatlist);
+        listView.setAdapter(adapter);
     }
 
     public static Activity getActivity() {

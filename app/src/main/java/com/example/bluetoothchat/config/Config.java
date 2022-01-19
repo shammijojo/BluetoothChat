@@ -12,12 +12,13 @@ import java.util.UUID;
 
 public class Config {
 
-    static BluetoothAdapter bluetoothAdapter;
-    static ConnectThread connectThread;
-    static AcceptThread acceptThread;
-    static ReadWriteThread readWriteThread;
+    private static BluetoothAdapter bluetoothAdapter;
+    private static ConnectThread connectThread;
+    private static AcceptThread acceptThread;
+    private static ReadWriteThread readWriteThread;
 
     public static final UUID MY_UUID = UUID.fromString("00000000-0000-1000-8000-00805F9B34FB");
+    public static final int CONNECT_COUNT=3;
     public static BluetoothSocket socket;
 
 

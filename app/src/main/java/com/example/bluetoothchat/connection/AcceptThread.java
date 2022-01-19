@@ -55,6 +55,7 @@ public class AcceptThread extends Thread {
         Config.socket = socket;
         System.out.println(socket + " connecting " + remoteDevice);
         Config.setReadWriteThread(socket).start();
+        Connect.getContext().finish();
         Intent i = new Intent(Connect.getContext(), ChatWindow.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Connect.getContext().startActivity(i);

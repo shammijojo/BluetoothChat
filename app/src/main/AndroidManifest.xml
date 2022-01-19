@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".btactivity.MainActivity"
+            android:name=".btactivity.DeviceList"
             android:exported="true"></activity>
     </application>
 
