@@ -29,7 +29,7 @@ public class ChatWindow extends AppCompatActivity {
     private static ListView listView;
     private ImageButton send;
     private EditText editText;
-    static Activity activity;
+    private static Activity activity;
 
     @Override
     public boolean onCreateOptionsMenu(Menu m) {
@@ -45,8 +45,14 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        CommonUtil.disconnectConfirm();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0,0);
         setContentView(R.layout.activity_chat_window);
         initialise();
 

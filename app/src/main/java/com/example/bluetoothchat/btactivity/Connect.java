@@ -33,13 +33,12 @@ public class Connect extends AppCompatActivity {
 
         try{
             if(!CommonUtil.isBluetoothEnabled()){
-                Toast.makeText(getApplicationContext(),"Switching on bluetooth...",Toast.LENGTH_SHORT).show();
-                Config.getBluetoothAdapter().enable();
-                Toast.makeText(getApplicationContext(),"Bluetooth switched on successfully",Toast.LENGTH_SHORT).show();
+                overridePendingTransition(0,0);
+                CommonUtil.confirmBluetoothEnable();
             }
         }
         catch (Exception ex){
-            CommonUtil.errorDialogBox();
+            CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
         }
 
 

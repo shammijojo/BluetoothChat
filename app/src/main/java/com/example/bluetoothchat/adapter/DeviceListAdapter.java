@@ -28,7 +28,7 @@ import java.util.List;
 
 public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     public DeviceListAdapter(@NonNull Context context, @NonNull List<BluetoothDevice> list) {
         super(context, R.layout.device_list_layout, list);

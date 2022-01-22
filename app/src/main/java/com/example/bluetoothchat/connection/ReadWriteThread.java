@@ -58,7 +58,7 @@ public class ReadWriteThread extends Thread {
                 System.out.println("jojo" + new String(buffer, StandardCharsets.UTF_8).trim());
 
                 if (str.equals("<--DISCONNECTING-->")) {
-                    CommonUtil.disconnect();
+                    CommonUtil.errorDialogBox("Connection Lost!!",1);
                     break;
                 }
 
@@ -80,7 +80,7 @@ public class ReadWriteThread extends Thread {
 
 
             } catch (IOException e) {
-                CommonUtil.errorDialogBox();
+                CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
                 break;
             }
         }
@@ -108,7 +108,7 @@ public class ReadWriteThread extends Thread {
             handler.obtainMessage(2, -1, -1,
                     buffer).sendToTarget();
         } catch (IOException e) {
-            CommonUtil.errorDialogBox();
+            CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
         }
     }
 

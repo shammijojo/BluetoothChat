@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.btactivity.ChatWindow;
@@ -34,6 +35,7 @@ public class CommonUtil {
 
         if (Integer.valueOf(hour) > 12)
             hour = String.valueOf(Integer.parseInt(hour) - 12);
+
         if (hour.equals("0"))
             hour = "12";
 
@@ -83,19 +85,37 @@ public class CommonUtil {
         return true;
     }
 
-    public static void disconnect() {
-        Config.getReadWriteThread().interrupt();
-        Config.setReadWriteThreadAsNull();
-        Config.setAcceptThreadAsNull();
-        Config.setConnectThreadAsNull();
-        ChatWindow.getActivity().finish();
-        Intent intent = new Intent(ChatWindow.getActivity(), Connect.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ChatWindow.getActivity().startActivity(intent);
+    public static void disconnect(){
+        try{
+            Activity activity=ChatWindow.getActivity();
+            activity.finish();
+            Intent intent = new Intent(ChatWindow.getActivity(), Connect.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ChatWindow.getActivity().startActivity(intent);
+
+
+            if(Config.getConnectThread()!=null) {
+                Config.getConnectThread().interrupt();
+            }
+
+            if(Config.getAcceptThread()!=null) {
+                Config.getAcceptThread().getSocket().close();
+                Config.getAcceptThread().interrupt();
+            }
+            Config.getReadWriteThread().interrupt();
+            Config.setReadWriteThreadAsNull();
+            Config.setAcceptThreadAsNull();
+            Config.setConnectThreadAsNull();
+            Config.socket=null;
+        }
+        catch (Exception ex){
+            errorDialogBox("Some error occurred!! Try again later",0);
+        }
+
     }
 
 
-    private static void disconnectConfirm() {
+    public static void disconnectConfirm() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
         alertDialogBuilder.setMessage("Are you sure to exit?");
         alertDialogBuilder.setCancelable(true);
@@ -104,9 +124,10 @@ public class CommonUtil {
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
                         String disconnectMessage = "<--DISCONNECTING-->";
                         Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
-                        dialog.cancel();
+                        disconnect();
                     }
                 });
 
@@ -123,9 +144,9 @@ public class CommonUtil {
     }
 
 
-    public static void errorDialogBox(){
+    public static void errorDialogBox(String message,int code){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
-        alertDialogBuilder.setMessage("Some error occurred!!Try again later");
+        alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
         alertDialogBuilder.setTitle("ERROR");
         alertDialogBuilder.setIcon(R.drawable.warning);
@@ -134,15 +155,11 @@ public class CommonUtil {
                 "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String disconnectMessage = "<--DISCONNECTING-->";
-                        Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
-                        Config.setConnectThreadAsNull();
-                        Config.setAcceptThreadAsNull();
-                        Config.setReadWriteThreadAsNull();
-                        dialog.cancel();
-                        ChatWindow.getActivity().finish();
-                        Intent i = new Intent(ChatWindow.getActivity(), Connect.class);
-                        ChatWindow.getActivity().startActivity(i);
+                        if(code==0) {
+                            String disconnectMessage = "<--DISCONNECTING-->";
+                            Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
+                        }
+                        disconnect();
                     }
                 });
 
@@ -150,8 +167,10 @@ public class CommonUtil {
         ChatWindow.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                if(!ChatWindow.getActivity().isDestroyed()) {
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
             }
         });
 
@@ -164,6 +183,37 @@ public class CommonUtil {
             return false;
         }
         return true;
+    }
+
+    public static void confirmBluetoothEnable(){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Connect.getContext());
+        alertDialogBuilder.setMessage("Switch On Bluetooth?");
+        alertDialogBuilder.setCancelable(true);
+
+        alertDialogBuilder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    @SuppressLint("MissingPermission")
+                    public void onClick(DialogInterface dialog, int id) {
+                        Config.getBluetoothAdapter().enable();
+                        dialog.cancel();
+                        Toast.makeText(Connect.getContext(),"Bluetooth switched on successfully",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(
+                "Exit",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.exit(0);
+                    }
+                });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
 }

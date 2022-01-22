@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ChatListAdapter extends ArrayAdapter<Message> {
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     public ChatListAdapter(@NonNull Context context, @NonNull List<Message> list) {
         super(context, R.layout.chatbox_layout, list);

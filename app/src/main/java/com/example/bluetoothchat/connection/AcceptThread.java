@@ -16,13 +16,14 @@ import com.example.bluetoothchat.config.Config;
 import java.io.IOException;
 
 public class AcceptThread extends Thread {
-    private final BluetoothServerSocket serverSocket;
+    private  BluetoothServerSocket serverSocket;
+    public static BluetoothSocket socket = null;
 
     @SuppressLint("MissingPermission")
     public AcceptThread() {
         BluetoothServerSocket tmp = null;
         try {
-            tmp = Config.getBluetoothAdapter().listenUsingRfcommWithServiceRecord("bluetoothchat", Config.MY_UUID);
+            tmp = Config.getBluetoothAdapter().listenUsingRfcommWithServiceRecord("BTchat", Config.MY_UUID);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -31,11 +32,12 @@ public class AcceptThread extends Thread {
 
 
     public void run() {
-        BluetoothSocket socket = null;
+
         // Keep listening until exception occurs or a socket is returned.
         while (true) {
             try {
                 socket = serverSocket.accept();
+
             } catch (IOException e) {
                 Log.e(TAG, "Socket's accept() method failed", e);
                 break;
@@ -46,6 +48,11 @@ public class AcceptThread extends Thread {
                 // the connection in a separate thread.
                 connected(socket, socket.getRemoteDevice());
                 // mmServerSocket.close();
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
         }
@@ -59,5 +66,9 @@ public class AcceptThread extends Thread {
         Intent i = new Intent(Connect.getContext(), ChatWindow.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Connect.getContext().startActivity(i);
+    }
+
+    public  BluetoothSocket getSocket(){
+        return socket;
     }
 }
