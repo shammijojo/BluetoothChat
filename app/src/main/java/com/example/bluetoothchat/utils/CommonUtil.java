@@ -28,6 +28,9 @@ public class CommonUtil {
         String hour = String.valueOf(calendar.getTime().getHours());
         String minute = String.valueOf(calendar.getTime().getMinutes());
 
+        String month=String.valueOf(calendar.getTime().getMonth()+1);
+        String day=String.valueOf(calendar.getTime().getDate());
+
         String noon = "AM";
 
         if (Integer.valueOf(hour) > 12)
@@ -42,7 +45,7 @@ public class CommonUtil {
         if (Integer.valueOf(minute) < 10)
             minute = "0" + minute;
 
-        return hour + ":" + minute + " " + noon;
+        return day+"/"+month+" "+hour + ":" + minute + " " + noon;
 
     }
 
@@ -99,7 +102,7 @@ public class CommonUtil {
             }
 
             if(Config.getAcceptThread()!=null) {
-                Config.getAcceptThread().getSocket().close();
+//                Config.getAcceptThread().getSocket().close();
                 Config.getAcceptThread().interrupt();
             }
             Config.getReadWriteThread().interrupt();
@@ -155,6 +158,7 @@ public class CommonUtil {
                 "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
                         if(code==0) {
                             String disconnectMessage = "<--DISCONNECTING-->";
                             Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
@@ -167,7 +171,7 @@ public class CommonUtil {
         ChatWindow.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(!ChatWindow.getActivity().isDestroyed()) {
+                if(Config.getReadWriteThread()!=null) {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }

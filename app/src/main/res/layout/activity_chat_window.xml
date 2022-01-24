@@ -7,14 +7,6 @@
     android:background="#F9F6D2"
     tools:context=".btactivity.ChatWindow">
 
-    <ListView
-        android:id="@+id/chatlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@id/message"
-        tools:ignore="MissingConstraints"
-        android:transcriptMode="alwaysScroll"/>
 
     <EditText
         android:id="@+id/message"
@@ -48,5 +40,15 @@
         app:layout_constraintLeft_toRightOf="@+id/message"
         >
     </ImageButton>
+
+    <ListView
+        android:id="@+id/chatlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@id/message"
+        tools:ignore="MissingConstraints"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

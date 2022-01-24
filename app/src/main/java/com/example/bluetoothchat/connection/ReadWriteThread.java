@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
+import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.enums.MessageType;
 import com.example.bluetoothchat.model.Message;
@@ -23,6 +24,7 @@ public class ReadWriteThread extends Thread {
     private final BluetoothSocket bluetoothSocket;
     private final InputStream inputStream;
     private final OutputStream outputStream;
+    private static boolean disconnect;
     Handler handler;
 
     public ReadWriteThread(BluetoothSocket socket) {
@@ -55,7 +57,6 @@ public class ReadWriteThread extends Thread {
 
                 bytes = inputStream.read(buffer);
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
-                System.out.println("jojo" + new String(buffer, StandardCharsets.UTF_8).trim());
 
                 if (str.equals("<--DISCONNECTING-->")) {
                     CommonUtil.errorDialogBox("Connection Lost!!",1);
@@ -67,7 +68,9 @@ public class ReadWriteThread extends Thread {
                     public void run() {
                         Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                         toast.show();
-                        ChatWindow.addMsg(new Message(str, MessageType.RECEIVED, Calendar.getInstance().getTime().toString()));
+                        Message message=new Message(str, MessageType.RECEIVED, CommonUtil.getCurrentTime());
+                        ChatWindow.addMsg(message);
+                        Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
                     }
                 });
 
@@ -91,7 +94,6 @@ public class ReadWriteThread extends Thread {
         try {
             outputStream.write(buffer);
             String str = new String(buffer, StandardCharsets.UTF_8).trim();
-            System.out.println(new String(buffer, StandardCharsets.UTF_8).trim());
             if (str.equals("<--DISCONNECTING-->")) {
                 CommonUtil.disconnect();
                 return;
@@ -102,7 +104,9 @@ public class ReadWriteThread extends Thread {
                 public void run() {
                     Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                     toast.show();
-                    ChatWindow.addMsg(new Message(str, MessageType.SENT, Calendar.getInstance().getTime().toString()));
+                    Message message=new Message(str, MessageType.SENT, CommonUtil.getCurrentTime());
+                    ChatWindow.addMsg(message);
+                    Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
                 }
             });
             handler.obtainMessage(2, -1, -1,
@@ -119,4 +123,9 @@ public class ReadWriteThread extends Thread {
             e.printStackTrace();
         }
     }
+
+    public BluetoothSocket getSocket(){
+        return bluetoothSocket;
+    }
+
 }

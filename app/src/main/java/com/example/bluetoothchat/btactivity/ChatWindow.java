@@ -55,6 +55,7 @@ public class ChatWindow extends AppCompatActivity {
         overridePendingTransition(0,0);
         setContentView(R.layout.activity_chat_window);
         initialise();
+        list.addAll(Config.getDatabaseObject(getApplicationContext()).readTable());
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +66,7 @@ public class ChatWindow extends AppCompatActivity {
             }
         });
     }
+
 
     public static void addMsg(Message message) {
         list.add(new Message(message.getMessage(), message.getMessageType(), CommonUtil.getCurrentTime()));

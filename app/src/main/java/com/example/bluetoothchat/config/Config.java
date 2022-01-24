@@ -3,10 +3,12 @@ package com.example.bluetoothchat.config;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 
 import com.example.bluetoothchat.connection.AcceptThread;
 import com.example.bluetoothchat.connection.ConnectThread;
 import com.example.bluetoothchat.connection.ReadWriteThread;
+import com.example.bluetoothchat.dao.Database;
 
 import java.util.UUID;
 
@@ -20,6 +22,8 @@ public class Config {
     public static final UUID MY_UUID = UUID.fromString("00000000-0000-1000-8000-00805F9B34FB");
     public static final int CONNECT_COUNT=3;
     public static BluetoothSocket socket;
+
+    private static Database database;
 
 
     public static BluetoothAdapter getBluetoothAdapter() {
@@ -89,6 +93,13 @@ public class Config {
             readWriteThread.interrupt();
         }
         readWriteThread = null;
+    }
+
+    public static Database getDatabaseObject(Context context){
+        if(database==null){
+            database=new Database(context);
+        }
+        return database;
     }
 
 

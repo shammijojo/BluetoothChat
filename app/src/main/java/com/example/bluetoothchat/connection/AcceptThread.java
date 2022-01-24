@@ -17,7 +17,6 @@ import java.io.IOException;
 
 public class AcceptThread extends Thread {
     private  BluetoothServerSocket serverSocket;
-    public static BluetoothSocket socket = null;
 
     @SuppressLint("MissingPermission")
     public AcceptThread() {
@@ -32,7 +31,7 @@ public class AcceptThread extends Thread {
 
 
     public void run() {
-
+        BluetoothSocket socket = null;
         // Keep listening until exception occurs or a socket is returned.
         while (true) {
             try {
@@ -68,7 +67,7 @@ public class AcceptThread extends Thread {
         Connect.getContext().startActivity(i);
     }
 
-    public  BluetoothSocket getSocket(){
-        return socket;
-    }
+//    public  BluetoothSocket getSocket(){
+//        return socket;
+//    }
 }

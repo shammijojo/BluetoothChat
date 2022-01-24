@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+import com.example.bluetoothchat.btactivity.ChatWindow;
+import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 import java.io.IOException;
 
@@ -68,6 +71,7 @@ public class ConnectThread extends Thread {
     private void connected(BluetoothSocket socket, BluetoothDevice device) {
         Config.socket = socket;
         Config.setReadWriteThread(socket).start();
+        Config.getDatabaseObject(DeviceList.getContext()).createTables();
     }
 
     public void cancel() {
