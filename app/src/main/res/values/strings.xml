@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BTchat</string>
+    <string name="exit">Exit</string>
 </resources>

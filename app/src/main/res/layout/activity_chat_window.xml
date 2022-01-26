@@ -32,7 +32,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="2dp"
         app:layout_constraintWidth_percent="0.2"
-        android:src="@drawable/send"
+        android:src="@drawable/ic_baseline_send_24"
         android:scaleType="fitXY"
         android:backgroundTint="#F9F6D2"
         app:layout_constraintBottom_toBottomOf="parent"

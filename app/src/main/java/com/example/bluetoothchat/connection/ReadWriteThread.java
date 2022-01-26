@@ -41,6 +41,7 @@ public class ReadWriteThread extends Thread {
 
         inputStream = tmpIn;
         outputStream = tmpOut;
+        Config.setDeviceName(socket.getRemoteDevice().getAddress().replace(":","_"));
     }
 
     public void run() {

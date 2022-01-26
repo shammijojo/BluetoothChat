@@ -24,6 +24,7 @@ public class Config {
     public static BluetoothSocket socket;
 
     private static Database database;
+    private static String deviceName;
 
 
     public static BluetoothAdapter getBluetoothAdapter() {
@@ -93,6 +94,14 @@ public class Config {
             readWriteThread.interrupt();
         }
         readWriteThread = null;
+    }
+
+    public static String getDeviceName() {
+        return deviceName;
+    }
+
+    public static void setDeviceName(String deviceName) {
+        Config.deviceName = deviceName;
     }
 
     public static Database getDatabaseObject(Context context){

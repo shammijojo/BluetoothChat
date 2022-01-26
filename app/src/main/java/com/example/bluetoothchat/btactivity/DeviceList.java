@@ -31,53 +31,19 @@ public class DeviceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_twotone_bluetooth_searching_24);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_main);
         initialise();
         scanDevice();
     }
 
-//    final BroadcastReceiver discoveryFinishReceiver = new BroadcastReceiver() {
-//        @SuppressLint("MissingPermission")
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            BluetoothAdapter bt = Config.getBluetoothAdapter();
-//            String action = intent.getAction();
-//
-//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-//                    // list.add(device.getName() + "\n" + device.getAddress());
-//                }
-//            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-//                if (list.size() == 0) {
-//                    //list.add("new item");
-//                }
-//            }
-//        }
-//    };
 
 
     @SuppressLint("MissingPermission")
     private void scanDevice() {
         BluetoothAdapter bluetoothAdapter = Config.getBluetoothAdapter();
-//        if (bluetoothAdapter == null) {
-//            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (bluetoothAdapter.isDiscovering()) {
-//            bluetoothAdapter.cancelDiscovery();
-//        }
-//        bluetoothAdapter.startDiscovery();
-//
-//        // Register for broadcasts when a device is discovered
-//        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-//        registerReceiver(discoveryFinishReceiver, filter);
-//
-//        // Register for broadcasts when discovery has finished
-//        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-//        registerReceiver(discoveryFinishReceiver, filter);
-
         bluetoothAdapter = Config.getBluetoothAdapter();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 

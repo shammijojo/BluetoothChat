@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -78,15 +78,6 @@ public class CommonUtil {
 
     }
 
-    public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
-        if (item.getTitle().toString().equals("Disconnect")) {
-            disconnectConfirm();
-        } else if (item.getTitle().toString().equals("Exit")) {
-            activity.moveTaskToBack(true);
-            System.exit(0);
-        }
-        return true;
-    }
 
     public static void disconnect(){
         try{
@@ -96,20 +87,20 @@ public class CommonUtil {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ChatWindow.getActivity().startActivity(intent);
 
-
             if(Config.getConnectThread()!=null) {
                 Config.getConnectThread().interrupt();
             }
 
             if(Config.getAcceptThread()!=null) {
-//                Config.getAcceptThread().getSocket().close();
                 Config.getAcceptThread().interrupt();
             }
+
             Config.getReadWriteThread().interrupt();
             Config.setReadWriteThreadAsNull();
             Config.setAcceptThreadAsNull();
             Config.setConnectThreadAsNull();
-            Config.socket=null;
+            //Config.socket=null;
+            Config.socket.close();
         }
         catch (Exception ex){
             errorDialogBox("Some error occurred!! Try again later",0);
@@ -155,15 +146,22 @@ public class CommonUtil {
         alertDialogBuilder.setIcon(R.drawable.warning);
 
         alertDialogBuilder.setPositiveButton(
-                "OK",
+                "EXIT",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        if(code==0) {
-                            String disconnectMessage = "<--DISCONNECTING-->";
-                            Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
-                        }
                         disconnect();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(
+                "STAY HERE ",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ChatWindow.getActivity().findViewById(R.id.send).setEnabled(false);
+                        ChatWindow.getActivity().findViewById(R.id.send).setAlpha(.50f);
+                        Config.setReadWriteThreadAsNull();
+                        ChatWindow.disableMenuOptions();
                     }
                 });
 
@@ -219,5 +217,6 @@ public class CommonUtil {
         alertDialog.show();
 
     }
+
 
 }

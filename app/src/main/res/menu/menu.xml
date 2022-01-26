@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.bluetoothchat.btactivity.ChatWindow">
+
+
+
     <item
-        android:id="@+id/leaderboard"
-        android:title="Disconnect"/>
-    <item
-        android:id="@+id/exit"
-        android:title="Exit"/>
+        android:id="@+id/item"
+        android:title=""
+        android:icon="@drawable/ic_baseline_menu_24"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/disconnect"
+                android:title="Disconnect"
+                android:icon="@drawable/ic_baseline_bluetooth_disabled_24"
+                app:showAsAction="withText"/>
+            <item
+                android:id="@+id/delete"
+                android:title="Clear Chat History"
+                android:icon="@drawable/ic_baseline_delete_24"
+                app:showAsAction="withText"/>
+            <item
+                android:id="@+id/exit"
+                android:icon="@drawable/ic_baseline_close_24"
+                app:showAsAction="withText"
+                android:title="Exit"/>
+        </menu>
+    </item>
+
 </menu>
