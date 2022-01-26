@@ -20,7 +20,7 @@ public class Config {
     private static ReadWriteThread readWriteThread;
 
     public static final UUID MY_UUID = UUID.fromString("00000000-0000-1000-8000-00805F9B34FB");
-    public static final int CONNECT_COUNT=3;
+    public static final int CONNECT_COUNT = 3;
     public static BluetoothSocket socket;
 
     private static Database database;
@@ -104,9 +104,9 @@ public class Config {
         Config.deviceName = deviceName;
     }
 
-    public static Database getDatabaseObject(Context context){
-        if(database==null){
-            database=new Database(context);
+    public static Database getDatabaseObject(Context context) {
+        if (database == null) {
+            database = new Database(context);
         }
         return database;
     }

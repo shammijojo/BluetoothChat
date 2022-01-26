@@ -5,11 +5,7 @@ import static com.example.bluetoothchat.utils.CommonUtil.disconnectConfirm;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,9 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.ChatListAdapter;
@@ -48,7 +42,7 @@ public class ChatWindow extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        this.menu=menu;
+        this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
@@ -58,9 +52,9 @@ public class ChatWindow extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        menu=null;
-        activity=null;
-        adapter=null;
+        menu = null;
+        activity = null;
+        adapter = null;
     }
 
     @Override
@@ -69,7 +63,7 @@ public class ChatWindow extends AppCompatActivity {
     }
 
 
-    public static  void disableMenuOptions() {
+    public static void disableMenuOptions() {
         menu.getItem(0).getSubMenu().getItem(0).setEnabled(false);
     }
 
@@ -84,7 +78,7 @@ public class ChatWindow extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_twotone_bluetooth_searching_24);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        overridePendingTransition(0,0);
+        overridePendingTransition(0, 0);
         setContentView(R.layout.activity_chat_window);
         initialise();
         list.clear();
@@ -106,7 +100,7 @@ public class ChatWindow extends AppCompatActivity {
         listView.invalidateViews();
     }
 
-    private void initialise(){
+    private void initialise() {
         activity = ChatWindow.this;
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
@@ -127,8 +121,7 @@ public class ChatWindow extends AppCompatActivity {
         } else if (item.getTitle().toString().equals("Exit")) {
             activity.moveTaskToBack(true);
             System.exit(0);
-        }
-        else if (item.getTitle().toString().equals("Clear Chat History")) {
+        } else if (item.getTitle().toString().equals("Clear Chat History")) {
             clearChatHistoryConfirm();
         }
         return true;

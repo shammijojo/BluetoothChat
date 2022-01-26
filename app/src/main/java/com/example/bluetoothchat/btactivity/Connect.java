@@ -1,7 +1,6 @@
 package com.example.bluetoothchat.btactivity;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,14 +34,13 @@ public class Connect extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         initialise();
 
-        try{
-            if(!CommonUtil.isBluetoothEnabled()){
-                overridePendingTransition(0,0);
+        try {
+            if (!CommonUtil.isBluetoothEnabled()) {
+                overridePendingTransition(0, 0);
                 CommonUtil.confirmBluetoothEnable();
             }
-        }
-        catch (Exception ex){
-            CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
+        } catch (Exception ex) {
+            CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
         }
 
 

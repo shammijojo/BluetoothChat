@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -28,8 +27,8 @@ public class CommonUtil {
         String hour = String.valueOf(calendar.getTime().getHours());
         String minute = String.valueOf(calendar.getTime().getMinutes());
 
-        String month=String.valueOf(calendar.getTime().getMonth()+1);
-        String day=String.valueOf(calendar.getTime().getDate());
+        String month = String.valueOf(calendar.getTime().getMonth() + 1);
+        String day = String.valueOf(calendar.getTime().getDate());
 
         String noon = "AM";
 
@@ -45,7 +44,7 @@ public class CommonUtil {
         if (Integer.valueOf(minute) < 10)
             minute = "0" + minute;
 
-        return day+"/"+month+" "+hour + ":" + minute + " " + noon;
+        return day + "/" + month + " " + hour + ":" + minute + " " + noon;
 
     }
 
@@ -79,19 +78,19 @@ public class CommonUtil {
     }
 
 
-    public static void disconnect(){
-        try{
-            Activity activity=ChatWindow.getActivity();
+    public static void disconnect() {
+        try {
+            Activity activity = ChatWindow.getActivity();
             activity.finish();
             Intent intent = new Intent(ChatWindow.getActivity(), Connect.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ChatWindow.getActivity().startActivity(intent);
 
-            if(Config.getConnectThread()!=null) {
+            if (Config.getConnectThread() != null) {
                 Config.getConnectThread().interrupt();
             }
 
-            if(Config.getAcceptThread()!=null) {
+            if (Config.getAcceptThread() != null) {
                 Config.getAcceptThread().interrupt();
             }
 
@@ -101,9 +100,8 @@ public class CommonUtil {
             Config.setConnectThreadAsNull();
             //Config.socket=null;
             Config.socket.close();
-        }
-        catch (Exception ex){
-            errorDialogBox("Some error occurred!! Try again later",0);
+        } catch (Exception ex) {
+            errorDialogBox("Some error occurred!! Try again later", 0);
         }
 
     }
@@ -138,7 +136,7 @@ public class CommonUtil {
     }
 
 
-    public static void errorDialogBox(String message,int code){
+    public static void errorDialogBox(String message, int code) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(true);
@@ -169,7 +167,7 @@ public class CommonUtil {
         ChatWindow.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(Config.getReadWriteThread()!=null) {
+                if (Config.getReadWriteThread() != null) {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
@@ -179,15 +177,15 @@ public class CommonUtil {
     }
 
 
-    public static boolean isBluetoothEnabled(){
-        BluetoothAdapter bluetoothAdapter=Config.getBluetoothAdapter();
-        if(bluetoothAdapter==null || !bluetoothAdapter.isEnabled()){
+    public static boolean isBluetoothEnabled() {
+        BluetoothAdapter bluetoothAdapter = Config.getBluetoothAdapter();
+        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
             return false;
         }
         return true;
     }
 
-    public static void confirmBluetoothEnable(){
+    public static void confirmBluetoothEnable() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Connect.getContext());
         alertDialogBuilder.setMessage("Switch On Bluetooth?");
@@ -200,7 +198,7 @@ public class CommonUtil {
                     public void onClick(DialogInterface dialog, int id) {
                         Config.getBluetoothAdapter().enable();
                         dialog.cancel();
-                        Toast.makeText(Connect.getContext(),"Bluetooth switched on successfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Connect.getContext(), "Bluetooth switched on successfully", Toast.LENGTH_SHORT).show();
                     }
                 });
 

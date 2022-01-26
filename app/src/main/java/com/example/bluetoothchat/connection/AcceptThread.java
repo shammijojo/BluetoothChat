@@ -16,7 +16,7 @@ import com.example.bluetoothchat.config.Config;
 import java.io.IOException;
 
 public class AcceptThread extends Thread {
-    private  BluetoothServerSocket serverSocket;
+    private BluetoothServerSocket serverSocket;
 
     @SuppressLint("MissingPermission")
     public AcceptThread() {

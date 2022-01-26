@@ -40,7 +40,6 @@ public class DeviceList extends AppCompatActivity {
     }
 
 
-
     @SuppressLint("MissingPermission")
     private void scanDevice() {
         BluetoothAdapter bluetoothAdapter = Config.getBluetoothAdapter();
@@ -58,7 +57,7 @@ public class DeviceList extends AppCompatActivity {
 
     }
 
-    private void initialise(){
+    private void initialise() {
         progressBar = findViewById(R.id.progressInDevice);
         context = getApplicationContext();
         activity = DeviceList.this;

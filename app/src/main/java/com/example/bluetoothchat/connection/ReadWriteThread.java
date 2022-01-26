@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Calendar;
 
 public class ReadWriteThread extends Thread {
     private final BluetoothSocket bluetoothSocket;
@@ -41,7 +40,7 @@ public class ReadWriteThread extends Thread {
 
         inputStream = tmpIn;
         outputStream = tmpOut;
-        Config.setDeviceName(socket.getRemoteDevice().getAddress().replace(":","_"));
+        Config.setDeviceName(socket.getRemoteDevice().getAddress().replace(":", "_"));
     }
 
     public void run() {
@@ -60,7 +59,7 @@ public class ReadWriteThread extends Thread {
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
 
                 if (str.equals("<--DISCONNECTING-->")) {
-                    CommonUtil.errorDialogBox("Connection Lost!!",1);
+                    CommonUtil.errorDialogBox("Connection Lost!!", 1);
                     break;
                 }
 
@@ -69,7 +68,7 @@ public class ReadWriteThread extends Thread {
                     public void run() {
                         Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                         toast.show();
-                        Message message=new Message(str, MessageType.RECEIVED, CommonUtil.getCurrentTime());
+                        Message message = new Message(str, MessageType.RECEIVED, CommonUtil.getCurrentTime());
                         ChatWindow.addMsg(message);
                         Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
                     }
@@ -84,7 +83,7 @@ public class ReadWriteThread extends Thread {
 
 
             } catch (IOException e) {
-                CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
+                CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
                 break;
             }
         }
@@ -105,7 +104,7 @@ public class ReadWriteThread extends Thread {
                 public void run() {
                     Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
                     toast.show();
-                    Message message=new Message(str, MessageType.SENT, CommonUtil.getCurrentTime());
+                    Message message = new Message(str, MessageType.SENT, CommonUtil.getCurrentTime());
                     ChatWindow.addMsg(message);
                     Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
                 }
@@ -113,7 +112,7 @@ public class ReadWriteThread extends Thread {
             handler.obtainMessage(2, -1, -1,
                     buffer).sendToTarget();
         } catch (IOException e) {
-            CommonUtil.errorDialogBox("Some error occurred!! Try again later",0);
+            CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
         }
     }
 
@@ -125,7 +124,7 @@ public class ReadWriteThread extends Thread {
         }
     }
 
-    public BluetoothSocket getSocket(){
+    public BluetoothSocket getSocket() {
         return bluetoothSocket;
     }
 
