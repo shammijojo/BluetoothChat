@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -39,6 +40,13 @@ public class DeviceList extends AppCompatActivity {
         scanDevice();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent i = new Intent(getApplicationContext(), Connect.class);
+        startActivity(i);
+    }
 
     @SuppressLint("MissingPermission")
     private void scanDevice() {

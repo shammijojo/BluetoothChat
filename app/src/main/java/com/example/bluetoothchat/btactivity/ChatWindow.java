@@ -1,5 +1,6 @@
 package com.example.bluetoothchat.btactivity;
 
+import static com.example.bluetoothchat.utils.CommonUtil.confirmAppExit;
 import static com.example.bluetoothchat.utils.CommonUtil.disconnectConfirm;
 
 import android.app.Activity;
@@ -40,11 +41,11 @@ public class ChatWindow extends AppCompatActivity {
     private static ChatListAdapter adapter;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        this.menu = menu;
+    public boolean onCreateOptionsMenu(Menu m) {
+        super.onCreateOptionsMenu(m);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu, m);
+        menu = m;
         return true;
     }
 
@@ -64,7 +65,9 @@ public class ChatWindow extends AppCompatActivity {
 
 
     public static void disableMenuOptions() {
-        menu.getItem(0).getSubMenu().getItem(0).setEnabled(false);
+        if(menu!=null) {
+            menu.getItem(0).getSubMenu().getItem(0).setEnabled(false);
+        }
     }
 
     @Override
@@ -119,8 +122,7 @@ public class ChatWindow extends AppCompatActivity {
         if (item.getTitle().toString().equals("Disconnect")) {
             disconnectConfirm();
         } else if (item.getTitle().toString().equals("Exit")) {
-            activity.moveTaskToBack(true);
-            System.exit(0);
+            confirmAppExit(activity);
         } else if (item.getTitle().toString().equals("Clear Chat History")) {
             clearChatHistoryConfirm();
         }
