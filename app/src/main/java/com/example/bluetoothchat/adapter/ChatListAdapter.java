@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 
 import com.example.bluetoothchat.R;
-import com.example.bluetoothchat.enums.MessageType;
+import com.example.bluetoothchat.constants.MessageType;
 import com.example.bluetoothchat.model.Message;
 
 import java.util.List;

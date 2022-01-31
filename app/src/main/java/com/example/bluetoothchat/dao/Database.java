@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.bluetoothchat.config.Config;
-import com.example.bluetoothchat.enums.MessageType;
+import com.example.bluetoothchat.constants.MessageType;
 import com.example.bluetoothchat.model.Message;
 
 import java.util.ArrayList;
@@ -30,7 +30,6 @@ public class Database extends SQLiteOpenHelper {
 
     public void createTables() {
         sqLiteDatabase = this.getWritableDatabase();
-        System.out.println("Connected device: " + deviceName);
         String query = "create table if not exists device_" + deviceName +
                 "(message text,message_tye text,time text);";
         sqLiteDatabase.execSQL(query);

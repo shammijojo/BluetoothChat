@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,9 +23,8 @@ public class DeviceList extends AppCompatActivity {
 
     private List<BluetoothDevice> list = new ArrayList<>();
     private ListView listView;
-    private ProgressBar progressBar;
+    // private ProgressBar progressBar;
     private static Context context;
-    private static Activity activity;
 
 
     @Override
@@ -66,9 +64,7 @@ public class DeviceList extends AppCompatActivity {
     }
 
     private void initialise() {
-        progressBar = findViewById(R.id.progressInDevice);
-        context = getApplicationContext();
-        activity = DeviceList.this;
+        //  progressBar = findViewById(R.id.progressInDevice);
         context = getApplicationContext();
 
         DeviceListAdapter adapter = new DeviceListAdapter(DeviceList.this, list);
@@ -76,12 +72,18 @@ public class DeviceList extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        context = null;
+    }
+
     public static Context getContext() {
         return context;
     }
 
     public static Activity getActivity() {
-        return activity;
+        return (Activity) context;
     }
 
 

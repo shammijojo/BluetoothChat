@@ -1,4 +1,4 @@
-package com.example.bluetoothchat.enums;
+package com.example.bluetoothchat.constants;
 
 public enum MessageType {
 

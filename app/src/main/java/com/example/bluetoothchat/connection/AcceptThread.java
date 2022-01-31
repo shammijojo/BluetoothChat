@@ -12,6 +12,7 @@ import android.util.Log;
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
 
 import java.io.IOException;
 
@@ -22,7 +23,7 @@ public class AcceptThread extends Thread {
     public AcceptThread() {
         BluetoothServerSocket tmp = null;
         try {
-            tmp = Config.getBluetoothAdapter().listenUsingRfcommWithServiceRecord("BTchat", Config.MY_UUID);
+            tmp = Config.getBluetoothAdapter().listenUsingRfcommWithServiceRecord("BTchat", AppConstants.APP_UUID);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -61,13 +62,10 @@ public class AcceptThread extends Thread {
         Config.socket = socket;
         System.out.println(socket + " connecting " + remoteDevice);
         Config.setReadWriteThread(socket).start();
-        Connect.getContext().finish();
+        Connect.getActivity().finish();
         Intent i = new Intent(Connect.getContext(), ChatWindow.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Connect.getContext().startActivity(i);
     }
 
-//    public  BluetoothSocket getSocket(){
-//        return socket;
-//    }
 }

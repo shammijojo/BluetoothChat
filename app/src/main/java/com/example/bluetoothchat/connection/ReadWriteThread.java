@@ -9,9 +9,12 @@ import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
-import com.example.bluetoothchat.enums.MessageType;
+import com.example.bluetoothchat.constants.AppConstants;
+import com.example.bluetoothchat.constants.DialogBoxMessage;
+import com.example.bluetoothchat.constants.MessageType;
 import com.example.bluetoothchat.model.Message;
 import com.example.bluetoothchat.utils.CommonUtil;
+import com.example.bluetoothchat.utils.DialogBoxUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +26,7 @@ public class ReadWriteThread extends Thread {
     private final BluetoothSocket bluetoothSocket;
     private final InputStream inputStream;
     private final OutputStream outputStream;
-    private static boolean disconnect;
+    // private static boolean disconnect;
     Handler handler;
 
     public ReadWriteThread(BluetoothSocket socket) {
@@ -58,8 +61,8 @@ public class ReadWriteThread extends Thread {
                 bytes = inputStream.read(buffer);
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
 
-                if (str.equals("<--DISCONNECTING-->")) {
-                    CommonUtil.errorDialogBox("Connection Lost!!", 1);
+                if (str.equals(AppConstants.DISCONNECTING)) {
+                    DialogBoxUtil.errorDialogBox(DialogBoxMessage.CONNECTION_LOST, 1);
                     break;
                 }
 
@@ -83,7 +86,7 @@ public class ReadWriteThread extends Thread {
 
 
             } catch (IOException e) {
-                CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
+                DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
                 break;
             }
         }
@@ -94,7 +97,7 @@ public class ReadWriteThread extends Thread {
         try {
             outputStream.write(buffer);
             String str = new String(buffer, StandardCharsets.UTF_8).trim();
-            if (str.equals("<--DISCONNECTING-->")) {
+            if (str.equals(AppConstants.DISCONNECTING)) {
                 CommonUtil.disconnect();
                 return;
             }
@@ -112,7 +115,7 @@ public class ReadWriteThread extends Thread {
             handler.obtainMessage(2, -1, -1,
                     buffer).sendToTarget();
         } catch (IOException e) {
-            CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
+            DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
         }
     }
 

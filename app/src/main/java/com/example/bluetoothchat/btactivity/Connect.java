@@ -2,30 +2,28 @@ package com.example.bluetoothchat.btactivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.DialogBoxMessage;
+import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
+import com.example.bluetoothchat.utils.DialogBoxUtil;
 
 public class Connect extends AppCompatActivity {
 
     private Button accept, request;
-    private TextView loadingMessage;
-    private static ProgressBar progressBar;
-    private View fullScreen;
-    private static Activity context;
+    private ProgressBar progressBar;
+    private static Context context;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -40,10 +38,10 @@ public class Connect extends AppCompatActivity {
         try {
             if (!CommonUtil.isBluetoothEnabled()) {
                 overridePendingTransition(0, 0);
-                CommonUtil.confirmBluetoothEnable();
+                DialogBoxUtil.confirmBluetoothEnable();
             }
         } catch (Exception ex) {
-            CommonUtil.errorDialogBox("Some error occurred!! Try again later", 0);
+            DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
         }
 
 
@@ -56,7 +54,7 @@ public class Connect extends AppCompatActivity {
                 request.setClickable(false);
                 accept.setAlpha(.25f);
                 Config.setAcceptThread().start();
-                Toast.makeText(view.getContext(), "Waiting for devices...", Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(), ToastMessage.WAITING_FOR_DEVICES.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -72,22 +70,23 @@ public class Connect extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        CommonUtil.confirmAppExit(getContext());
+        DialogBoxUtil.confirmAppExit(getContext());
     }
 
     private void initialise() {
-        context = this;
+        context = this.getApplicationContext();
         accept = findViewById(R.id.accept);
         request = findViewById(R.id.request);
-        loadingMessage = findViewById(R.id.loadmessage);
         progressBar = findViewById(R.id.progress);
-        fullScreen = findViewById(R.id.connect);
     }
 
 
-
-    public static Activity getContext() {
+    public static Context getContext() {
         return context;
+    }
+
+    public static Activity getActivity() {
+        return (Activity) context;
     }
 
 }

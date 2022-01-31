@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket;
 
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class ConnectThread extends Thread {
         this.device = device;
         BluetoothSocket tmp = null;
         try {
-            tmp = device.createRfcommSocketToServiceRecord(Config.MY_UUID);
+            tmp = device.createRfcommSocketToServiceRecord(AppConstants.APP_UUID);
         } catch (IOException e) {
             e.printStackTrace();
         }

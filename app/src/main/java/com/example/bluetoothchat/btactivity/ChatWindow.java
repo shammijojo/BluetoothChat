@@ -1,10 +1,11 @@
 package com.example.bluetoothchat.btactivity;
 
-import static com.example.bluetoothchat.utils.CommonUtil.confirmAppExit;
-import static com.example.bluetoothchat.utils.CommonUtil.disconnectConfirm;
+import static com.example.bluetoothchat.utils.DialogBoxUtil.confirmAppExit;
+import static com.example.bluetoothchat.utils.DialogBoxUtil.disconnectConfirm;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.ChatListAdapter;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.DialogBoxMessage;
+import com.example.bluetoothchat.constants.MenuItemOptions;
 import com.example.bluetoothchat.model.Message;
 import com.example.bluetoothchat.utils.CommonUtil;
 
@@ -32,12 +35,10 @@ public class ChatWindow extends AppCompatActivity {
 
     private static List<Message> list = new ArrayList<>();
     private static ListView listView;
-
-
     private ImageButton send;
     private EditText editText;
     private static Menu menu;
-    private static Activity activity;
+    private static Context context;
     private static ChatListAdapter adapter;
 
     @Override
@@ -54,8 +55,10 @@ public class ChatWindow extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         menu = null;
-        activity = null;
+        context = null;
         adapter = null;
+        listView = null;
+        list = null;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class ChatWindow extends AppCompatActivity {
 
 
     public static void disableMenuOptions() {
-        if(menu!=null) {
+        if (menu != null) {
             menu.getItem(0).getSubMenu().getItem(0).setEnabled(false);
         }
     }
@@ -104,7 +107,7 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     private void initialise() {
-        activity = ChatWindow.this;
+        context = ChatWindow.this;
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
 
@@ -113,17 +116,21 @@ public class ChatWindow extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    public static Context getContext() {
+        return context;
+    }
+
     public static Activity getActivity() {
-        return activity;
+        return (Activity) context;
     }
 
 
     public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
-        if (item.getTitle().toString().equals("Disconnect")) {
+        if (item.getTitle().toString().equals(MenuItemOptions.DISCONNECT)) {
             disconnectConfirm();
-        } else if (item.getTitle().toString().equals("Exit")) {
+        } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT)) {
             confirmAppExit(activity);
-        } else if (item.getTitle().toString().equals("Clear Chat History")) {
+        } else if (item.getTitle().toString().equals(MenuItemOptions.CLEAR_CHAT_HISTORY)) {
             clearChatHistoryConfirm();
         }
         return true;
@@ -131,15 +138,16 @@ public class ChatWindow extends AppCompatActivity {
 
 
     public static void clearChatHistoryConfirm() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
-        alertDialogBuilder.setMessage("Are you sure to clear chat history?");
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getContext());
+        DialogBoxMessage dialogBuilderMessage = DialogBoxMessage.CLEAR_CHAT_HISTORY_CONFIRM;
+        alertDialogBuilder.setMessage(dialogBuilderMessage.getMessage());
         alertDialogBuilder.setCancelable(true);
 
         alertDialogBuilder.setPositiveButton(
-                "Yes",
+                dialogBuilderMessage.getPositiveOption(),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Config.getDatabaseObject(DeviceList.getContext()).deleteChats();
+                        Config.getDatabaseObject(context).deleteChats();
                         list.clear();
                         adapter.notifyDataSetChanged();
                         dialog.cancel();
@@ -147,7 +155,7 @@ public class ChatWindow extends AppCompatActivity {
                 });
 
         alertDialogBuilder.setNegativeButton(
-                "No",
+                dialogBuilderMessage.getNegativeOption(),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

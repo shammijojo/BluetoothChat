@@ -2,23 +2,19 @@ package com.example.bluetoothchat.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
 import com.example.bluetoothchat.config.Config;
-import com.example.bluetoothchat.enums.DeviceType;
+import com.example.bluetoothchat.constants.DeviceType;
+import com.example.bluetoothchat.constants.DialogBoxMessage;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 public class CommonUtil {
@@ -61,7 +57,6 @@ public class CommonUtil {
         else if (bluetoothClass >= 1024 && bluetoothClass <= 1096)
             deviceType = DeviceType.SPEAKER;
 
-
         switch (deviceType) {
             case SMARTPHONE:
                 ((ImageView) view.findViewById(R.id.deviceIcon)).setImageResource(R.drawable.phone);
@@ -75,7 +70,6 @@ public class CommonUtil {
             case OTHERS:
                 ((ImageView) view.findViewById(R.id.deviceIcon)).setImageResource(R.drawable.others);
         }
-
     }
 
 
@@ -83,9 +77,9 @@ public class CommonUtil {
         try {
             Activity activity = ChatWindow.getActivity();
             activity.finish();
-            Intent intent = new Intent(ChatWindow.getActivity(), Connect.class);
+            Intent intent = new Intent(ChatWindow.getContext(), Connect.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ChatWindow.getActivity().startActivity(intent);
+            ChatWindow.getContext().startActivity(intent);
 
             if (Config.getConnectThread() != null) {
                 Config.getConnectThread().interrupt();
@@ -102,81 +96,9 @@ public class CommonUtil {
             //Config.socket=null;
             Config.socket.close();
         } catch (Exception ex) {
-            errorDialogBox("Some error occurred!! Try again later", 0);
+            DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
         }
-
     }
-
-
-    public static void disconnectConfirm() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
-        alertDialogBuilder.setMessage("Are you sure to exit?");
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        String disconnectMessage = "<--DISCONNECTING-->";
-                        Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
-                        disconnect();
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-
-    public static void errorDialogBox(String message, int code) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
-        alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setCancelable(true);
-        alertDialogBuilder.setTitle("ERROR");
-        alertDialogBuilder.setIcon(R.drawable.warning);
-
-        alertDialogBuilder.setPositiveButton(
-                "EXIT",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        disconnect();
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton(
-                "STAY HERE ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ChatWindow.getActivity().findViewById(R.id.send).setEnabled(false);
-                        ChatWindow.getActivity().findViewById(R.id.send).setAlpha(.50f);
-                        Config.setReadWriteThreadAsNull();
-                        ChatWindow.disableMenuOptions();
-                    }
-                });
-
-
-        ChatWindow.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (Config.getReadWriteThread() != null) {
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-            }
-        });
-
-    }
-
 
     public static boolean isBluetoothEnabled() {
         BluetoothAdapter bluetoothAdapter = Config.getBluetoothAdapter();
@@ -184,64 +106,6 @@ public class CommonUtil {
             return false;
         }
         return true;
-    }
-
-    public static void confirmBluetoothEnable() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Connect.getContext());
-        alertDialogBuilder.setMessage("Switch On Bluetooth?");
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    @SuppressLint("MissingPermission")
-                    public void onClick(DialogInterface dialog, int id) {
-                        Config.getBluetoothAdapter().enable();
-                        dialog.cancel();
-                        Toast.makeText(Connect.getContext(), "Bluetooth switched on successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton(
-                "Exit",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        System.exit(0);
-                    }
-                });
-
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-    }
-
-    public static void confirmAppExit(Context context) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setMessage("Are you sure to exit?");
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ((Activity)context).moveTaskToBack(true);
-                        System.exit(0);
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
     }
 
 

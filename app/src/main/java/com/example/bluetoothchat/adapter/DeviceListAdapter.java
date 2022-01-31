@@ -22,6 +22,8 @@ import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
+import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
 
 import java.util.List;
@@ -65,7 +67,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (android.os.Build.VERSION.SDK_INT > 25)
-                                    Toast.makeText(view.getContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTING.toString(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.VISIBLE);
                                 listView.setAlpha(.8f);
                             }
@@ -76,7 +78,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                             try {
                                 Thread.sleep(3000);
                                 count++;
-                                if (count == Config.CONNECT_COUNT) {
+                                if (count == AppConstants.CONNECT_COUNT) {
                                     Config.getConnectThread().interrupt();
                                     Config.setConnectThreadAsNull();
 
@@ -84,7 +86,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                                         @Override
                                         public void run() {
                                             if (android.os.Build.VERSION.SDK_INT > 25)
-                                                Toast.makeText(view.getContext(), "Unable to Connect. Try again later", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(view.getContext(), ToastMessage.UNABLE_TO_CONNECT.toString(), Toast.LENGTH_SHORT).show();
 
                                             Intent i = new Intent(DeviceList.getContext(), DeviceList.class);
                                             activity.finish();
@@ -105,7 +107,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (android.os.Build.VERSION.SDK_INT > 25)
-                                    Toast.makeText(view.getContext(), "Connected Successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTED_SUCCESSFULLY.toString(), Toast.LENGTH_SHORT).show();
                                 activity.finish();
                                 Intent intent = new Intent(context, ChatWindow.class);
                                 activity.startActivity(intent);
