@@ -25,6 +25,7 @@ public class DeviceList extends AppCompatActivity {
     private ListView listView;
     // private ProgressBar progressBar;
     private static Context context;
+    private static Activity activity;
 
 
     @Override
@@ -49,10 +50,8 @@ public class DeviceList extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void scanDevice() {
         BluetoothAdapter bluetoothAdapter = Config.getBluetoothAdapter();
-        bluetoothAdapter = Config.getBluetoothAdapter();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-        // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 list.add(device);
@@ -66,6 +65,7 @@ public class DeviceList extends AppCompatActivity {
     private void initialise() {
         //  progressBar = findViewById(R.id.progressInDevice);
         context = getApplicationContext();
+        activity = this;
 
         DeviceListAdapter adapter = new DeviceListAdapter(DeviceList.this, list);
         listView = findViewById(R.id.deviceList);
@@ -76,6 +76,7 @@ public class DeviceList extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         context = null;
+        activity = null;
     }
 
     public static Context getContext() {
@@ -83,7 +84,7 @@ public class DeviceList extends AppCompatActivity {
     }
 
     public static Activity getActivity() {
-        return (Activity) context;
+        return activity;
     }
 
 

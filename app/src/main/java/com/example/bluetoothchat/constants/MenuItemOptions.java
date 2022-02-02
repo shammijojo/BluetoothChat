@@ -11,4 +11,8 @@ public enum MenuItemOptions {
     MenuItemOptions(String option) {
         this.option = option;
     }
+
+    public String getOption() {
+        return option;
+    }
 }

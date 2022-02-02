@@ -1,10 +1,13 @@
 package com.example.bluetoothchat.utils;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,7 +16,6 @@ import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.Connect;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.constants.DeviceType;
-import com.example.bluetoothchat.constants.DialogBoxMessage;
 
 import java.util.Calendar;
 
@@ -76,10 +78,11 @@ public class CommonUtil {
     public static void disconnect() {
         try {
             Activity activity = ChatWindow.getActivity();
-            activity.finish();
             Intent intent = new Intent(ChatWindow.getContext(), Connect.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ChatWindow.getContext().startActivity(intent);
+            activity.finish();
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity.startActivity(intent);
 
             if (Config.getConnectThread() != null) {
                 Config.getConnectThread().interrupt();
@@ -93,10 +96,10 @@ public class CommonUtil {
             Config.setReadWriteThreadAsNull();
             Config.setAcceptThreadAsNull();
             Config.setConnectThreadAsNull();
-            //Config.socket=null;
             Config.socket.close();
         } catch (Exception ex) {
-            DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
+            Log.e(TAG, "Error occurred while disconnecting");
+            System.exit(0);
         }
     }
 
@@ -107,6 +110,4 @@ public class CommonUtil {
         }
         return true;
     }
-
-
 }

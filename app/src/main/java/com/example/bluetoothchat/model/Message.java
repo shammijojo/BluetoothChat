@@ -12,24 +12,12 @@ public class Message {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public MessageType getMessageType() {
         return messageType;
     }
 
-    public void setMessageType(MessageType messageType) {
-        this.messageType = messageType;
-    }
-
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public Message(String message, MessageType messageType, String time) {

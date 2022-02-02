@@ -6,7 +6,8 @@ public enum DialogBoxMessage {
     SWITCH_ON_BLUETOOTH_CONFIRM("Switch On Bluetooth?", "YES", "EXIT"),
     ERROR_OCCURRED("Some error occurred!! Try again later", "EXIT", "STAY HERE"),
     CONNECTION_LOST("Connection Lost!!", "EXIT", "STAY HERE"),
-    CLEAR_CHAT_HISTORY_CONFIRM("Are you sure to clear chat history?", "YES", "NO");
+    CLEAR_CHAT_HISTORY_CONFIRM("Are you sure to clear chat history?", "YES", "NO"),
+    EXIT_APP("Some error occurred!! Exit app", "OK", "");
 
 
     private String message;

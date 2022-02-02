@@ -25,7 +25,7 @@ public class AcceptThread extends Thread {
         try {
             tmp = Config.getBluetoothAdapter().listenUsingRfcommWithServiceRecord("BTchat", AppConstants.APP_UUID);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Log.e(TAG, "Error occurred while creating accept thread");
         }
         serverSocket = tmp;
     }
@@ -51,7 +51,7 @@ public class AcceptThread extends Thread {
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Error occurred while starting accept thread");
                 }
                 break;
             }
@@ -60,12 +60,11 @@ public class AcceptThread extends Thread {
 
     private void connected(BluetoothSocket socket, BluetoothDevice remoteDevice) {
         Config.socket = socket;
-        System.out.println(socket + " connecting " + remoteDevice);
         Config.setReadWriteThread(socket).start();
         Connect.getActivity().finish();
-        Intent i = new Intent(Connect.getContext(), ChatWindow.class);
+        Intent i = new Intent(Connect.getActivity(), ChatWindow.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Connect.getContext().startActivity(i);
+        Connect.getActivity().startActivity(i);
     }
 
 }

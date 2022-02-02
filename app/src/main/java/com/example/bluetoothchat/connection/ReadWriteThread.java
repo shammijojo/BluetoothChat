@@ -3,10 +3,8 @@ package com.example.bluetoothchat.connection;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import com.example.bluetoothchat.btactivity.ChatWindow;
-import com.example.bluetoothchat.btactivity.Connect;
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.constants.AppConstants;
@@ -53,11 +51,8 @@ public class ReadWriteThread extends Thread {
 
         // Keep listening to the InputStream
         while (true) {
-            // System.out.println("inside");
             try {
                 // Read from the InputStream
-                // byte[] arr="hello".getBytes(StandardCharsets.UTF_8);
-
                 bytes = inputStream.read(buffer);
                 String str = new String(buffer, StandardCharsets.UTF_8).trim();
 
@@ -69,8 +64,6 @@ public class ReadWriteThread extends Thread {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
-                        toast.show();
                         Message message = new Message(str, MessageType.RECEIVED, CommonUtil.getCurrentTime());
                         ChatWindow.addMsg(message);
                         Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
@@ -105,8 +98,8 @@ public class ReadWriteThread extends Thread {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast toast = Toast.makeText(Connect.getContext(), str, Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(Connect.getActivity(), str, Toast.LENGTH_SHORT);
+//                    toast.show();
                     Message message = new Message(str, MessageType.SENT, CommonUtil.getCurrentTime());
                     ChatWindow.addMsg(message);
                     Config.getDatabaseObject(DeviceList.getContext()).insertIntoTable(message);
@@ -118,17 +111,4 @@ public class ReadWriteThread extends Thread {
             DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
         }
     }
-
-    public void cancel() {
-        try {
-            bluetoothSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public BluetoothSocket getSocket() {
-        return bluetoothSocket;
-    }
-
 }

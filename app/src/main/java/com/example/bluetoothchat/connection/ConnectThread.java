@@ -1,8 +1,11 @@
 package com.example.bluetoothchat.connection;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
@@ -22,7 +25,7 @@ public class ConnectThread extends Thread {
         try {
             tmp = device.createRfcommSocketToServiceRecord(AppConstants.APP_UUID);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error occurred while creating connect thread");
         }
         socket = tmp;
     }
@@ -44,11 +47,12 @@ public class ConnectThread extends Thread {
             connected = true;
         } catch (IOException e) {
             try {
-                System.out.println(e);
-                if (socket != null)
+                Log.e(TAG, "Error occurred while starting accept thread");
+                if (socket != null) {
                     socket.close();
+                }
             } catch (IOException e2) {
-                System.out.println(e2);
+                Log.e(TAG, "Error occurred while closing socket");
             }
             connectionFailed();
             return;
@@ -64,20 +68,13 @@ public class ConnectThread extends Thread {
     }
 
     private void connectionFailed() {
-        System.out.println("connection failed");
+        Log.e(TAG, "Connection failed");
     }
 
     private void connected(BluetoothSocket socket, BluetoothDevice device) {
         Config.socket = socket;
         Config.setReadWriteThread(socket).start();
         Config.getDatabaseObject(DeviceList.getContext()).createTables();
-    }
-
-    public void cancel() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-        }
     }
 
     public boolean isConnected() {

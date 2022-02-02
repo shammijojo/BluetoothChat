@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
-import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
 import com.example.bluetoothchat.utils.DialogBoxUtil;
@@ -24,6 +23,7 @@ public class Connect extends AppCompatActivity {
     private Button accept, request;
     private ProgressBar progressBar;
     private static Context context;
+    private static Activity activity;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -34,16 +34,7 @@ public class Connect extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_connect);
         initialise();
-
-        try {
-            if (!CommonUtil.isBluetoothEnabled()) {
-                overridePendingTransition(0, 0);
-                DialogBoxUtil.confirmBluetoothEnable();
-            }
-        } catch (Exception ex) {
-            DialogBoxUtil.errorDialogBox(DialogBoxMessage.ERROR_OCCURRED, 0);
-        }
-
+        checkIfBluetoothEnabled();
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +45,9 @@ public class Connect extends AppCompatActivity {
                 request.setClickable(false);
                 accept.setAlpha(.25f);
                 Config.setAcceptThread().start();
-                Toast.makeText(view.getContext(), ToastMessage.WAITING_FOR_DEVICES.toString(), Toast.LENGTH_LONG).show();
+                if (CommonUtil.isBluetoothEnabled()) {
+                    Toast.makeText(view.getContext(), ToastMessage.WAITING_FOR_DEVICES.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -70,23 +63,30 @@ public class Connect extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DialogBoxUtil.confirmAppExit(getContext());
+        DialogBoxUtil.confirmAppExit(getActivity());
     }
 
     private void initialise() {
-        context = this.getApplicationContext();
+        context = getContext();
         accept = findViewById(R.id.accept);
         request = findViewById(R.id.request);
         progressBar = findViewById(R.id.progress);
+        activity = this;
     }
 
+    private void checkIfBluetoothEnabled() {
+        if (!CommonUtil.isBluetoothEnabled()) {
+            overridePendingTransition(0, 0);
+            DialogBoxUtil.confirmBluetoothEnable();
+        }
+    }
 
     public static Context getContext() {
         return context;
     }
 
     public static Activity getActivity() {
-        return (Activity) context;
+        return activity;
     }
 
 }

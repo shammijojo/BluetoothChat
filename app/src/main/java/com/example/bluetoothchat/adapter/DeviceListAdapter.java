@@ -63,11 +63,11 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
-                                if (android.os.Build.VERSION.SDK_INT > 25)
-                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTING.toString(), Toast.LENGTH_SHORT).show();
+                                if (android.os.Build.VERSION.SDK_INT > 25) {
+                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTING.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                                 progressBar.setVisibility(View.VISIBLE);
                                 listView.setAlpha(.8f);
                             }
@@ -85,15 +85,14 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                                     DeviceList.getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (android.os.Build.VERSION.SDK_INT > 25)
-                                                Toast.makeText(view.getContext(), ToastMessage.UNABLE_TO_CONNECT.toString(), Toast.LENGTH_SHORT).show();
-
+                                            if (android.os.Build.VERSION.SDK_INT > 25) {
+                                                Toast.makeText(view.getContext(), ToastMessage.UNABLE_TO_CONNECT.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
                                             Intent i = new Intent(DeviceList.getContext(), DeviceList.class);
                                             activity.finish();
                                             activity.overridePendingTransition(0, 0);
                                             activity.startActivity(i);
                                             activity.overridePendingTransition(0, 0);
-
                                         }
                                     });
 
@@ -106,8 +105,9 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
 
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
-                                if (android.os.Build.VERSION.SDK_INT > 25)
-                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTED_SUCCESSFULLY.toString(), Toast.LENGTH_SHORT).show();
+                                if (android.os.Build.VERSION.SDK_INT > 25) {
+                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTED_SUCCESSFULLY.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                                 activity.finish();
                                 Intent intent = new Intent(context, ChatWindow.class);
                                 activity.startActivity(intent);

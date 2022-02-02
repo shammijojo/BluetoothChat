@@ -33,12 +33,13 @@ import java.util.List;
 
 public class ChatWindow extends AppCompatActivity {
 
-    private static List<Message> list = new ArrayList<>();
+    private static List<Message> list;
     private static ListView listView;
     private ImageButton send;
     private EditText editText;
     private static Menu menu;
     private static Context context;
+    public static Activity activity;
     private static ChatListAdapter adapter;
 
     @Override
@@ -49,7 +50,6 @@ public class ChatWindow extends AppCompatActivity {
         menu = m;
         return true;
     }
-
 
     @Override
     protected void onDestroy() {
@@ -65,7 +65,6 @@ public class ChatWindow extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return selectMenuItemOption(item, ChatWindow.this);
     }
-
 
     public static void disableMenuOptions() {
         if (menu != null) {
@@ -107,7 +106,10 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     private void initialise() {
-        context = ChatWindow.this;
+        list = new ArrayList<>();
+        context = getApplicationContext();
+        activity = this;
+
         send = findViewById(R.id.send);
         editText = findViewById(R.id.message);
 
@@ -121,16 +123,16 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     public static Activity getActivity() {
-        return (Activity) context;
+        return activity;
     }
 
 
     public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
-        if (item.getTitle().toString().equals(MenuItemOptions.DISCONNECT)) {
+        if (item.getTitle().toString().equals(MenuItemOptions.DISCONNECT.getOption())) {
             disconnectConfirm();
-        } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT)) {
+        } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT.getOption())) {
             confirmAppExit(activity);
-        } else if (item.getTitle().toString().equals(MenuItemOptions.CLEAR_CHAT_HISTORY)) {
+        } else if (item.getTitle().toString().equals(MenuItemOptions.CLEAR_CHAT_HISTORY.getOption())) {
             clearChatHistoryConfirm();
         }
         return true;
@@ -138,7 +140,7 @@ public class ChatWindow extends AppCompatActivity {
 
 
     public static void clearChatHistoryConfirm() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getContext());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
         DialogBoxMessage dialogBuilderMessage = DialogBoxMessage.CLEAR_CHAT_HISTORY_CONFIRM;
         alertDialogBuilder.setMessage(dialogBuilderMessage.getMessage());
         alertDialogBuilder.setCancelable(true);

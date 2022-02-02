@@ -10,5 +10,6 @@ public final class AppConstants {
     public final static String YES = "YES";
     public final static String NO = "NO";
     public final static String DISCONNECTING = "<--DISCONNECTING-->";
+    public final static String DISCONNECTED = "DISCONNECTED";
 
 }
