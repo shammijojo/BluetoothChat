@@ -15,10 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.ChatListAdapter;
 import com.example.bluetoothchat.config.Config;
@@ -26,7 +24,6 @@ import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.MenuItemOptions;
 import com.example.bluetoothchat.model.Message;
 import com.example.bluetoothchat.utils.CommonUtil;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +39,11 @@ public class ChatWindow extends AppCompatActivity {
     public static Activity activity;
     private static ChatListAdapter adapter;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu m) {
-        super.onCreateOptionsMenu(m);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, m);
-        menu = m;
-        return true;
+    public static void addMsg(Message message) {
+        list.add(
+          new Message(message.getMessage(), message.getMessageType(),
+            CommonUtil.getCurrentTime()));
+        listView.invalidateViews();
     }
 
     @Override
@@ -77,32 +72,46 @@ public class ChatWindow extends AppCompatActivity {
         disconnectConfirm();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_twotone_bluetooth_searching_24);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        overridePendingTransition(0, 0);
-        setContentView(R.layout.activity_chat_window);
-        initialise();
-        list.clear();
-        list.addAll(Config.getDatabaseObject(getApplicationContext()).readTable());
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msg = editText.getText().toString();
-                Config.setReadWriteThread(Config.socket).write(msg.getBytes(StandardCharsets.UTF_8));
-                editText.setText("");
-            }
-        });
+    public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
+        if (item.getTitle().toString().equals(MenuItemOptions.DISCONNECT.getOption())) {
+            disconnectConfirm();
+        } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT.getOption())) {
+            confirmAppExit(activity);
+        } else if (item.getTitle().toString()
+          .equals(MenuItemOptions.CLEAR_CHAT_HISTORY.getOption())) {
+            clearChatHistoryConfirm();
+        }
+        return true;
     }
 
+    public static void clearChatHistoryConfirm() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+          ChatWindow.getActivity());
+        DialogBoxMessage dialogBuilderMessage = DialogBoxMessage.CLEAR_CHAT_HISTORY_CONFIRM;
+        alertDialogBuilder.setMessage(dialogBuilderMessage.getMessage());
+        alertDialogBuilder.setCancelable(true);
 
-    public static void addMsg(Message message) {
-        list.add(new Message(message.getMessage(), message.getMessageType(), CommonUtil.getCurrentTime()));
-        listView.invalidateViews();
+        alertDialogBuilder.setPositiveButton(
+          dialogBuilderMessage.getPositiveOption(),
+          new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                  Config.getDatabaseObject(context).deleteChats();
+                  list.clear();
+                  adapter.notifyDataSetChanged();
+                  dialog.cancel();
+              }
+          });
+
+        alertDialogBuilder.setNegativeButton(
+          dialogBuilderMessage.getNegativeOption(),
+          new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                  dialog.cancel();
+              }
+          });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void initialise() {
@@ -126,46 +135,38 @@ public class ChatWindow extends AppCompatActivity {
         return activity;
     }
 
-
-    public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
-        if (item.getTitle().toString().equals(MenuItemOptions.DISCONNECT.getOption())) {
-            disconnectConfirm();
-        } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT.getOption())) {
-            confirmAppExit(activity);
-        } else if (item.getTitle().toString().equals(MenuItemOptions.CLEAR_CHAT_HISTORY.getOption())) {
-            clearChatHistoryConfirm();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        super.onCreateOptionsMenu(m);
+        Config.setCurrentActivity(this);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, m);
+        menu = m;
         return true;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Config.setCurrentActivity(this);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_twotone_bluetooth_searching_24);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        overridePendingTransition(0, 0);
+        setContentView(R.layout.activity_chat_window);
+        initialise();
+        list.clear();
+        list.addAll(Config.getDatabaseObject(getApplicationContext()).readTable());
 
-    public static void clearChatHistoryConfirm() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatWindow.getActivity());
-        DialogBoxMessage dialogBuilderMessage = DialogBoxMessage.CLEAR_CHAT_HISTORY_CONFIRM;
-        alertDialogBuilder.setMessage(dialogBuilderMessage.getMessage());
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton(
-                dialogBuilderMessage.getPositiveOption(),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Config.getDatabaseObject(context).deleteChats();
-                        list.clear();
-                        adapter.notifyDataSetChanged();
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton(
-                dialogBuilderMessage.getNegativeOption(),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String msg = editText.getText().toString();
+                Config.setReadWriteThread(Config.socket)
+                  .write(msg.getBytes(StandardCharsets.UTF_8));
+                editText.setText("");
+            }
+        });
     }
 
 }

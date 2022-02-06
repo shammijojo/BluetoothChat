@@ -1,10 +1,13 @@
 package com.example.bluetoothchat.adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +16,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.btactivity.ChatWindow;
 import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.constants.AppConstants;
+import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
-
+import com.example.bluetoothchat.utils.DialogBoxUtil;
 import java.util.List;
 
 public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
@@ -50,23 +52,40 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
         ProgressBar progressBar = activity.findViewById(R.id.progressInDevice);
 
         BluetoothDevice bluetoothDevice = getItem(position);
-        CommonUtil.getDeviceType(view, bluetoothDevice);
-        text.setText(bluetoothDevice.getName().toUpperCase());
+        try {
+            CommonUtil.getDeviceType(view, bluetoothDevice);
+            text.setText(bluetoothDevice.getName().toUpperCase());
+        } catch (Exception ex) {
+            System.out.println("really");
+        }
 
         View textView = view.findViewById(R.id.layout);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.received_msg));
-                Config.getConnectThread(bluetoothDevice).start();
+                if (!CommonUtil.isBluetoothEnabled()) {
+                    Config.getCurrentActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogBoxUtil.exitAppOnError(DialogBoxMessage.UNABLE_TO_CONNECT);
+                        }
+                    });
 
+                    return;
+                }
+
+                textView
+                  .setBackground(ContextCompat.getDrawable(getContext(), R.drawable.received_msg));
+                Config.getConnectThread(bluetoothDevice).start();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (android.os.Build.VERSION.SDK_INT > 25) {
-                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTING.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(),
+                                      ToastMessage.CONNECTING.getMessage(),
+                                      Toast.LENGTH_SHORT).show();
                                 }
                                 progressBar.setVisibility(View.VISIBLE);
                                 listView.setAlpha(.8f);
@@ -86,27 +105,35 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                                         @Override
                                         public void run() {
                                             if (android.os.Build.VERSION.SDK_INT > 25) {
-                                                Toast.makeText(view.getContext(), ToastMessage.UNABLE_TO_CONNECT.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(view.getContext(),
+                                                  ToastMessage.UNABLE_TO_CONNECT
+                                                    .getMessage(),
+                                                  Toast.LENGTH_SHORT).show();
                                             }
-                                            Intent i = new Intent(DeviceList.getContext(), DeviceList.class);
+                                            Intent i = new Intent(
+                                              DeviceList.getContext(),
+                                              DeviceList.class);
                                             activity.finish();
                                             activity.overridePendingTransition(0, 0);
                                             activity.startActivity(i);
                                             activity.overridePendingTransition(0, 0);
                                         }
                                     });
-
                                     return;
                                 }
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                Log.e(TAG, "Error while connecting to device");
+                                DialogBoxUtil.exitAppOnError(DialogBoxMessage.UNABLE_TO_CONNECT);
                             }
                         }
 
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (android.os.Build.VERSION.SDK_INT > 25) {
-                                    Toast.makeText(view.getContext(), ToastMessage.CONNECTED_SUCCESSFULLY.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast
+                                      .makeText(view.getContext(),
+                                        ToastMessage.CONNECTED_SUCCESSFULLY.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                                 activity.finish();
                                 Intent intent = new Intent(context, ChatWindow.class);
@@ -117,7 +144,6 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                 }).start();
             }
         });
-
         return view;
     }
 
