@@ -10,7 +10,7 @@ import com.example.bluetoothchat.btactivity.DeviceList;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.constants.AppConstants;
 import com.example.bluetoothchat.constants.DialogBoxMessage;
-import com.example.bluetoothchat.utils.DialogBoxUtil;
+import com.example.bluetoothchat.utils.CommonUtil;
 import java.io.IOException;
 
 public class ConnectThread extends Thread {
@@ -27,7 +27,7 @@ public class ConnectThread extends Thread {
                tmp = device.createRfcommSocketToServiceRecord(AppConstants.APP_UUID);
           } catch (IOException e) {
                Log.e(TAG, "Error occurred while creating connect thread");
-               DialogBoxUtil.exitAppOnError(DialogBoxMessage.UNABLE_TO_REQUEST);
+               CommonUtil.callExitFromLooper(DialogBoxMessage.UNABLE_TO_REQUEST);
           }
           socket = tmp;
      }
@@ -66,7 +66,7 @@ public class ConnectThread extends Thread {
 
      private void connectionFailed() {
           Log.e(TAG, "Connection failed");
-          DialogBoxUtil.exitAppOnError(DialogBoxMessage.UNABLE_TO_REQUEST);
+          CommonUtil.callExitFromLooper(DialogBoxMessage.UNABLE_TO_REQUEST);
      }
 
      private void connected(BluetoothSocket socket) {

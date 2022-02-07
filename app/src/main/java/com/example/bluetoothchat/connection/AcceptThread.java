@@ -25,7 +25,8 @@ public class AcceptThread extends Thread {
           try {
                if (CommonUtil.isBluetoothEnabled()) {
                     tmp = Config.getBluetoothAdapter()
-                      .listenUsingRfcommWithServiceRecord("BTchat", AppConstants.APP_UUID);
+                      .listenUsingRfcommWithServiceRecord(AppConstants.APPNAME,
+                        AppConstants.APP_UUID);
                } else {
                     tmp = null;
                }

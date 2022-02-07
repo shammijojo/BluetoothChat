@@ -7,18 +7,21 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.widget.ListView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.DeviceListAdapter;
 import com.example.bluetoothchat.config.Config;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class DeviceList extends AppCompatActivity {
 
-     // private ProgressBar progressBar;
      private static Context context;
      private static Activity activity;
      private final List<BluetoothDevice> list = new ArrayList<>();
@@ -42,6 +45,29 @@ public class DeviceList extends AppCompatActivity {
           setContentView(R.layout.activity_main);
           initialise();
           scanDevice();
+
+          Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+               @Override
+               public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
+                    new Thread() {
+                         @Override
+                         public void run() {
+                              Looper.prepare();
+                              Toast
+                                .makeText(getActivity(), "Some error occurred!! Exiting app",
+                                  Toast.LENGTH_SHORT).show();
+                              Looper.loop();
+                         }
+                    }.start();
+                    try {
+                         Thread.sleep(2000); // Let the Toast display before app will get shutdown
+                    } catch (InterruptedException e) {
+                    }
+                    System.exit(2);
+               }
+          });
+
+
      }
 
      @Override
@@ -67,7 +93,6 @@ public class DeviceList extends AppCompatActivity {
      }
 
      private void initialise() {
-          //  progressBar = findViewById(R.id.progressInDevice);
           context = getApplicationContext();
           activity = this;
 

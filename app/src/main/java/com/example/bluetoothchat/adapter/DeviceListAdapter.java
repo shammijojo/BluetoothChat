@@ -56,7 +56,8 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
             CommonUtil.getDeviceType(view, bluetoothDevice);
             text.setText(bluetoothDevice.getName().toUpperCase());
         } catch (Exception ex) {
-            System.out.println("really");
+            Log.e(TAG, "Error while loading device list");
+            DialogBoxUtil.exitAppOnError(DialogBoxMessage.UNABLE_TO_LOAD_DEVICE_LIST);
         }
 
         View textView = view.findViewById(R.id.layout);
@@ -92,12 +93,12 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                             }
                         });
 
-                        int count = 0;
+                        int connectTryCount = 0;
                         while (!Config.getConnectThread(bluetoothDevice).isConnected()) {
                             try {
                                 Thread.sleep(3000);
-                                count++;
-                                if (count == AppConstants.CONNECT_COUNT) {
+                                connectTryCount++;
+                                if (connectTryCount == AppConstants.CONNECT_TRY_LIMIT) {
                                     Config.getConnectThread().interrupt();
                                     Config.setConnectThreadAsNull();
 

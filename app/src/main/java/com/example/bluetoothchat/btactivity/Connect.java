@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
@@ -16,6 +18,7 @@ import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
 import com.example.bluetoothchat.utils.DialogBoxUtil;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 public class Connect extends AppCompatActivity {
 
@@ -42,7 +45,6 @@ public class Connect extends AppCompatActivity {
           getSupportActionBar().setDisplayUseLogoEnabled(true);
 
           Config.setCurrentActivity(Connect.this);
-
           initialise();
           checkIfBluetoothEnabled();
 
@@ -56,7 +58,6 @@ public class Connect extends AppCompatActivity {
                     accept.setAlpha(.25f);
 
                     Config.setAcceptThread().start();
-
                     if (CommonUtil.isBluetoothEnabled()) {
                          Toast.makeText(view.getContext(),
                            ToastMessage.WAITING_FOR_DEVICES.getMessage(),
@@ -78,6 +79,27 @@ public class Connect extends AppCompatActivity {
                     }
                }
           });
+
+          Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+               @Override
+               public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
+                    new Thread() {
+                         @Override
+                         public void run() {
+                              Looper.prepare();
+                              Toast.makeText(getActivity(), "Some error occurred!! Exiting app",
+                                Toast.LENGTH_SHORT).show();
+                              Looper.loop();
+                         }
+                    }.start();
+                    try {
+                         Thread.sleep(2000); // Let the Toast display before app will get shutdown
+                    } catch (InterruptedException e) {
+                    }
+                    System.exit(2);
+               }
+          });
+
      }
 
      @Override

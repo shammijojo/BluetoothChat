@@ -27,8 +27,6 @@ public class DialogBoxUtil {
             dialogBoxMessage.getPositiveOption(),
             new DialogInterface.OnClickListener() {
                  public void onClick(DialogInterface dialog, int id) {
-                      //String disconnectMessage = AppConstants.DISCONNECTING;
-                      //  Config.setReadWriteThread(Config.socket).write(disconnectMessage.getBytes(StandardCharsets.UTF_8));
                       dialog.cancel();
                       CommonUtil.disconnect();
                  }
@@ -154,7 +152,6 @@ public class DialogBoxUtil {
             Toast.LENGTH_SHORT).show();
           AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
             Config.getCurrentActivity());
-          //DialogBoxMessage dialogBoxMessage = DialogBoxMessage.UNABLE_TO_ACCEPT;
           alertDialogBuilder.setMessage(dialogBoxMessage.getMessage());
           alertDialogBuilder.setTitle(AppConstants.ERROR);
           alertDialogBuilder.setIcon(R.drawable.warning);
@@ -220,6 +217,5 @@ public class DialogBoxUtil {
                }
           });
      }
-
 
 }

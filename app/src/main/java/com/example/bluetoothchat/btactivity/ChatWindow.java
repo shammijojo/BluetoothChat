@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
@@ -24,6 +26,7 @@ import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.MenuItemOptions;
 import com.example.bluetoothchat.model.Message;
 import com.example.bluetoothchat.utils.CommonUtil;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,6 +170,28 @@ public class ChatWindow extends AppCompatActivity {
                 editText.setText("");
             }
         });
+
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        Looper.prepare();
+                        Toast
+                          .makeText(getActivity(), "Some error occurred!! Exiting app",
+                            Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
+                }.start();
+                try {
+                    Thread.sleep(2000); // Let the Toast display before app will get shutdown
+                } catch (InterruptedException e) {
+                }
+                System.exit(2);
+            }
+        });
+
     }
 
 }

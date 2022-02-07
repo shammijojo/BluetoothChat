@@ -39,7 +39,7 @@ public class ReadWriteThread extends Thread {
                tmpOut = socket.getOutputStream();
           } catch (IOException e) {
                Log.e(TAG, "Error while getting I/O stream from socket");
-               DialogBoxUtil.exitAppOnError(DialogBoxMessage.EXIT_APP);
+               CommonUtil.callExitFromLooper(DialogBoxMessage.EXIT_APP);
           }
 
           inputStream = tmpIn;

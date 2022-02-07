@@ -13,7 +13,7 @@ import com.example.bluetoothchat.connection.ConnectThread;
 import com.example.bluetoothchat.connection.ReadWriteThread;
 import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.dao.Database;
-import com.example.bluetoothchat.utils.DialogBoxUtil;
+import com.example.bluetoothchat.utils.CommonUtil;
 
 public class Config {
 
@@ -21,7 +21,6 @@ public class Config {
     private static ConnectThread connectThread;
     private static AcceptThread acceptThread;
     private static ReadWriteThread readWriteThread;
-    //    private static BluetoothCheckThread bluetoothCheckThread;
     public static BluetoothSocket socket;
 
     private static Database database;
@@ -45,7 +44,7 @@ public class Config {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error occurred while getting Bluetooth adapter");
-            DialogBoxUtil.exitAppOnError(DialogBoxMessage.EXIT_APP);
+            CommonUtil.callExitFromLooper(DialogBoxMessage.EXIT_APP);
         }
 
         return bluetoothAdapter;
@@ -125,17 +124,4 @@ public class Config {
         }
         return database;
     }
-
-//    public static BluetoothCheckThread getBluetoothCheckThread() {
-//        if (bluetoothCheckThread == null) {
-//            bluetoothCheckThread = new BluetoothCheckThread();
-//        }
-//        return bluetoothCheckThread;
-//    }
-
-//   // public static BluetoothCheckThread getBluetoothCheckThread() {
-//        return bluetoothCheckThread;
-//    }
-
-
 }

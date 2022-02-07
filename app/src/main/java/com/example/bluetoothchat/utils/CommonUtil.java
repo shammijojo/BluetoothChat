@@ -53,7 +53,6 @@ public class CommonUtil {
     public static void getDeviceType(View view, BluetoothDevice bluetoothDevice) throws Exception {
 
         Integer bluetoothClass = bluetoothDevice.getBluetoothClass().getDeviceClass();
-
         DeviceType deviceType = DeviceType.OTHERS;
 
         if (bluetoothClass >= 512 && bluetoothClass <= 532) {
@@ -115,7 +114,7 @@ public class CommonUtil {
 
         } catch (Exception ex) {
             Log.e(TAG, "Error occurred while disconnecting");
-            System.exit(0);
+            CommonUtil.callExitFromLooper(DialogBoxMessage.EXIT_APP);
         }
     }
 
