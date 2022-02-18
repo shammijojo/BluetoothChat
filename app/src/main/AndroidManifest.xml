@@ -29,7 +29,7 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/bluetooth"
+        android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/Theme.BluetoothChat">
         <activity

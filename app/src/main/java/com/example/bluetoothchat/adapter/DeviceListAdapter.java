@@ -47,7 +47,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
         View view = inflater.inflate(R.layout.device_list_layout, null, true);
         TextView text = view.findViewById(R.id.deviceName);
         Context context = DeviceList.getContext();
-        Activity activity = DeviceList.getActivity();
+        Activity activity = Config.getCurrentActivity();
         ListView listView = activity.findViewById(R.id.deviceList);
         ProgressBar progressBar = activity.findViewById(R.id.progressInDevice);
 
@@ -78,6 +78,7 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                 textView
                   .setBackground(ContextCompat.getDrawable(getContext(), R.drawable.received_msg));
                 Config.getConnectThread(bluetoothDevice).start();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -109,15 +110,14 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
                                                 Toast.makeText(view.getContext(),
                                                   ToastMessage.UNABLE_TO_CONNECT
                                                     .getMessage(),
-                                                  Toast.LENGTH_SHORT).show();
+                                                  Toast.LENGTH_LONG).show();
                                             }
-                                            Intent i = new Intent(
-                                              DeviceList.getContext(),
-                                              DeviceList.class);
-                                            activity.finish();
-                                            activity.overridePendingTransition(0, 0);
-                                            activity.startActivity(i);
-                                            activity.overridePendingTransition(0, 0);
+
+                                            textView
+                                              .setBackground(ContextCompat
+                                                .getDrawable(getContext(), R.drawable.sent_msg));
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            listView.setAlpha(1f);
                                         }
                                     });
                                     return;

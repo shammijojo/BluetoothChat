@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
 import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
@@ -87,7 +88,7 @@ public class Connect extends AppCompatActivity {
                          @Override
                          public void run() {
                               Looper.prepare();
-                              Toast.makeText(getActivity(), "Some error occurred!! Exiting app",
+                              Toast.makeText(Config.getCurrentActivity(), AppConstants.EXIT_MSG,
                                 Toast.LENGTH_SHORT).show();
                               Looper.loop();
                          }
@@ -96,6 +97,7 @@ public class Connect extends AppCompatActivity {
                          Thread.sleep(2000); // Let the Toast display before app will get shutdown
                     } catch (InterruptedException e) {
                     }
+
                     System.exit(2);
                }
           });

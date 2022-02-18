@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.DeviceListAdapter;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DeviceList extends AppCompatActivity {
      @Override
      protected void onCreate(Bundle savedInstanceState) {
           super.onCreate(savedInstanceState);
-          Config.setCurrentActivity(DeviceList.this);
+          Config.setCurrentActivity(this);
           getSupportActionBar().setDisplayShowHomeEnabled(true);
           getSupportActionBar().setLogo(R.drawable.ic_twotone_bluetooth_searching_24);
           getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -54,7 +55,7 @@ public class DeviceList extends AppCompatActivity {
                          public void run() {
                               Looper.prepare();
                               Toast
-                                .makeText(getActivity(), "Some error occurred!! Exiting app",
+                                .makeText(Config.getCurrentActivity(), AppConstants.EXIT_MSG,
                                   Toast.LENGTH_SHORT).show();
                               Looper.loop();
                          }

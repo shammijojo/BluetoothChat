@@ -10,5 +10,7 @@ public final class AppConstants {
      public final static String ERROR = "ERROR";
      public final static String DISCONNECTING = "<--DISCONNECTING-->";
      public final static String DISCONNECTED = "DISCONNECTED";
+     public final static String EXIT_MSG = "Some error occurred!! Exiting app";
+     public final static String BLUETOOTH_ON_MSG = "Make sure bluetooth is switched on";
 
 }

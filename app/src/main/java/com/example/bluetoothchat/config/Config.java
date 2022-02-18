@@ -72,7 +72,6 @@ public class Config {
         connectThread = null;
     }
 
-
     public static AcceptThread setAcceptThread() {
         if (acceptThread == null) {
             acceptThread = new AcceptThread();
@@ -90,7 +89,6 @@ public class Config {
     public static AcceptThread getAcceptThread() {
         return acceptThread;
     }
-
 
     public static ReadWriteThread setReadWriteThread(BluetoothSocket bluetoothSocket) {
         if (readWriteThread == null) {

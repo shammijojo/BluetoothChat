@@ -147,9 +147,12 @@ public class DialogBoxUtil {
 
 
      public static void exitAppOnError(DialogBoxMessage dialogBoxMessage) {
-          Toast.makeText(Connect.getActivity(),
-            "Make sure bluetooth is switched on",
-            Toast.LENGTH_SHORT).show();
+          if (!dialogBoxMessage.getMessage()
+            .equals(DialogBoxMessage.UNABLE_TO_LOAD_DEVICE_LIST.getMessage())) {
+               Toast.makeText(Connect.getActivity(), AppConstants.BLUETOOTH_ON_MSG,
+                 Toast.LENGTH_SHORT).show();
+          }
+
           AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
             Config.getCurrentActivity());
           alertDialogBuilder.setMessage(dialogBoxMessage.getMessage());

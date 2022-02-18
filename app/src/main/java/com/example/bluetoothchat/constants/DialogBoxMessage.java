@@ -20,7 +20,6 @@ public enum DialogBoxMessage {
      private final String positiveOption;
      private final String negativeOption;
 
-
      DialogBoxMessage(String message, String positiveOption, String negativeOption) {
           this.message = message;
           this.positiveOption = positiveOption;

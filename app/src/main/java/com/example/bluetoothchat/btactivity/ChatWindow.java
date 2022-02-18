@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.adapter.ChatListAdapter;
 import com.example.bluetoothchat.config.Config;
+import com.example.bluetoothchat.constants.AppConstants;
 import com.example.bluetoothchat.constants.DialogBoxMessage;
 import com.example.bluetoothchat.constants.MenuItemOptions;
 import com.example.bluetoothchat.model.Message;
@@ -179,7 +180,7 @@ public class ChatWindow extends AppCompatActivity {
                     public void run() {
                         Looper.prepare();
                         Toast
-                          .makeText(getActivity(), "Some error occurred!! Exiting app",
+                          .makeText(Config.getCurrentActivity(), AppConstants.EXIT_MSG,
                             Toast.LENGTH_SHORT).show();
                         Looper.loop();
                     }

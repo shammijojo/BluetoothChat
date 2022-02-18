@@ -49,7 +49,7 @@ public class ConnectThread extends Thread {
                connected = true;
           } catch (IOException e) {
                try {
-                    Log.e(TAG, "Error occurred while starting accept thread");
+                    Log.e(TAG, "Error occurred while starting connect thread");
                     if (socket != null) {
                          socket.close();
                     }
@@ -66,7 +66,8 @@ public class ConnectThread extends Thread {
 
      private void connectionFailed() {
           Log.e(TAG, "Connection failed");
-          CommonUtil.callExitFromLooper(DialogBoxMessage.UNABLE_TO_REQUEST);
+          // CommonUtil.callExitFromLooper(DialogBoxMessage.UNABLE_TO_REQUEST);
+          // throw new RuntimeException("Connection failed");
      }
 
      private void connected(BluetoothSocket socket) {

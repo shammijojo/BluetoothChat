@@ -40,7 +40,6 @@ public class Database extends SQLiteOpenHelper {
                Log.e(TAG, "Error while creating table in SQLite");
                DialogBoxUtil.runDatabaseErrorDialogFromLooper();
           }
-
      }
 
      public void insertIntoTable(Message message) {
@@ -55,7 +54,6 @@ public class Database extends SQLiteOpenHelper {
                Log.e(TAG, "Error while inserting data into SQLite");
                DialogBoxUtil.runDatabaseErrorDialogFromLooper();
           }
-
      }
 
      public List<Message> readTable() {
@@ -89,7 +87,6 @@ public class Database extends SQLiteOpenHelper {
                Log.e(TAG, "Error while deleting  data from SQLite");
                DialogBoxUtil.runDatabaseErrorDialogFromLooper();
           }
-
      }
 
      @Override
