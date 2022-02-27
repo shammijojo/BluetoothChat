@@ -1,11 +1,16 @@
 package com.example.bluetoothchat.btactivity;
 
+import static com.example.bluetoothchat.utils.DialogBoxUtil.confirmAppExit;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,6 +21,7 @@ import com.example.bluetoothchat.R;
 import com.example.bluetoothchat.config.Config;
 import com.example.bluetoothchat.constants.AppConstants;
 import com.example.bluetoothchat.constants.DialogBoxMessage;
+import com.example.bluetoothchat.constants.MenuItemOptions;
 import com.example.bluetoothchat.constants.ToastMessage;
 import com.example.bluetoothchat.utils.CommonUtil;
 import com.example.bluetoothchat.utils.DialogBoxUtil;
@@ -27,6 +33,7 @@ public class Connect extends AppCompatActivity {
      private static Activity activity;
      private Button accept, request;
      private ProgressBar progressBar;
+     private static Menu menu;
 
      public static Context getContext() {
           return context;
@@ -34,6 +41,30 @@ public class Connect extends AppCompatActivity {
 
      public static Activity getActivity() {
           return activity;
+     }
+
+     @Override
+     public boolean onCreateOptionsMenu(Menu m) {
+          super.onCreateOptionsMenu(m);
+          Config.setCurrentActivity(this);
+          MenuInflater inflater = getMenuInflater();
+          inflater.inflate(R.menu.common_menu, m);
+          menu = m;
+          return true;
+     }
+
+     @Override
+     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+          return selectMenuItemOption(item, Connect.this);
+     }
+
+     public static boolean selectMenuItemOption(MenuItem item, Activity activity) {
+          if (item.getTitle().toString().equals(MenuItemOptions.CREDITS.getOption())) {
+               DialogBoxUtil.aboutUs();
+          } else if (item.getTitle().toString().equals(MenuItemOptions.EXIT.getOption())) {
+               confirmAppExit(activity);
+          }
+          return true;
      }
 
      @SuppressLint("MissingPermission")

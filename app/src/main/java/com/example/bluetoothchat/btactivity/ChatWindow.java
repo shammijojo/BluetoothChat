@@ -144,7 +144,7 @@ public class ChatWindow extends AppCompatActivity {
         super.onCreateOptionsMenu(m);
         Config.setCurrentActivity(this);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, m);
+        inflater.inflate(R.menu.chat_window_menu, m);
         menu = m;
         return true;
     }

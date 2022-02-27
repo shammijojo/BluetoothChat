@@ -221,4 +221,22 @@ public class DialogBoxUtil {
           });
      }
 
+     public static void aboutUs() {
+          String message = "Credits:\n"
+            + "Icons used are downloaded from the following sources:\n"
+            + "1. https://www.flaticon.com/free-icons/bluetooth: Ceated by Freepik - Flaticon\n"
+            + "2. https://www.flaticon.com/free-icons/communication: Created by Vectors Market - Flaticon\n"
+            + "3. https://icons8.com/";
+
+          AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+            Config.getCurrentActivity());
+          alertDialogBuilder.setTitle("CREDITS");
+          alertDialogBuilder.setIcon(R.drawable.ic_baseline_info_24);
+          alertDialogBuilder.setCancelable(true);
+          alertDialogBuilder.setMessage(message);
+
+          AlertDialog alertDialog = alertDialogBuilder.create();
+          alertDialog.show();
+     }
+
 }

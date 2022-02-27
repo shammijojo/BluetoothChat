@@ -4,7 +4,8 @@ public enum MenuItemOptions {
 
     DISCONNECT("Disconnect"),
     EXIT("Exit"),
-    CLEAR_CHAT_HISTORY("Clear Chat History");
+    CLEAR_CHAT_HISTORY("Clear Chat History"),
+    CREDITS("Credits");
 
     private String option;
 
